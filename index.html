@@ -3,50 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="조건 5개와 질문 15개로 나의 여행 유형과 추천 여행지 3곳을 알아보세요.">
-<meta property="og:title" content="나한테 맞는 여행지는 어디일까? 여행 취향 테스트">
-<meta property="og:description" content="3분이면 끝나는 여행 취향 테스트. 내 여행 유형과 추천 여행지 3곳을 알려드려요.">
-<meta property="og:type" content="website">
-</head>
-<body>
 <title>여행 취향 테스트</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="조건 5개와 질문 20개로 나의 여행 유형과 추천 여행지 3곳을 알아보세요.">
+<meta property="og:title" content="나한테 맞는 여행지는 어디일까? 여행 취향 테스트">
+<meta property="og:description" content="3분이면 끝나는 여행 취향 테스트. 내 여행 유형, 학생 시절 모습, 찰떡 여행 메이트와 추천 여행지 3곳까지.">
+<meta property="og:type" content="website">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gothic+A1:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <style>
-/* 레이아웃: 탑승권(보딩패스) 한 장이 화면 단계마다 바뀌는 단일 카드 */
+/* 레이아웃: 탑승권 카드 한 장이 단계마다 바뀌고, 결과는 탑승권 + 여행지 카드 묶음 */
 :root{
   --bg:#e7eef0; --paper:#fbfdfc; --ink:#14353d; --muted:#5b7177; --line:#c9d6d9;
-  --accent:#e2543a; --stamp:#f2b33d; --soft:#dfecee;
+  --accent:#e2543a; --stamp:#f2b33d; --soft:#dfecee; --warn:#d1342b;
   --display:"Do Hyeon","Gothic A1",system-ui,sans-serif;
   --body:"Gothic A1",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+@media (prefers-color-scheme:dark){:root{
   --bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349;
-  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349;
-  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; color-scheme:dark}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; --warn:#ff6b5e; color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px}
-.wrap{max-width:560px;margin:0 auto;display:grid;gap:16px}
+.wrap{max-width:600px;margin:0 auto;display:grid;gap:16px}
 .pass{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .pass-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;
   border-bottom:2px dashed var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--muted)}
 .pass-body{padding:24px 20px;display:grid;gap:18px}
-h1,h2{font-family:var(--display);font-weight:400;line-height:1.2;margin:0;text-wrap:balance}
-h1{font-size:clamp(34px,9vw,48px)} h2{font-size:26px}
+h1,h2,h3{margin:0;text-wrap:balance}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.2}
+h1{font-size:clamp(34px,9vw,48px)} h2{font-size:28px}
+h3{font-size:17px;font-weight:800}
 p{margin:0}.muted{color:var(--muted)}
 .route{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-weight:600;font-size:28px}
 .route span.small{font-size:12px;color:var(--muted);display:block;font-weight:500}
-.route .dash{flex:1;border-top:2px dotted var(--line);position:relative;min-width:30px}
-.btn{font:inherit;font-weight:800;border:0;border-radius:10px;padding:14px 18px;cursor:pointer;background:var(--accent);color:#fff;width:100%;display:block;text-align:center;text-decoration:none;box-sizing:border-box}
-#imgOut{width:100%;max-width:320px;margin:0 auto;display:block;border-radius:12px;border:1px solid var(--line)}
-.imgbox{display:grid;gap:10px}
+.route .dash{flex:1;border-top:2px dotted var(--line);min-width:30px}
+.btn{font:inherit;font-weight:800;border:0;border-radius:10px;padding:14px 18px;cursor:pointer;background:var(--accent);color:#fff;width:100%;display:block;text-align:center;text-decoration:none}
 .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
 .btn:focus-visible,.opt:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
 .field{display:grid;gap:8px}
-.field label.t{font-weight:800;font-size:14px}
+.field .t{font-weight:800;font-size:14px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips input{position:absolute;opacity:0;pointer-events:none}
 .chips label{border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:14px}
@@ -54,31 +49,72 @@ p{margin:0}.muted{color:var(--muted)}
 .chips input:focus-visible+label{outline:3px solid var(--stamp)}
 .bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden}
 .bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
-.qmeta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--muted)}
 .opts{display:grid;gap:10px}
 .opt{font:inherit;text-align:left;background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:14px 16px;cursor:pointer}
 .opt:hover{border-color:var(--accent)}
-.type{display:flex;gap:16px;align-items:center}
-.badge{font-size:44px;width:76px;height:76px;flex:none;display:grid;place-items:center;background:var(--soft);border-radius:50%;border:2px solid var(--stamp)}
-.dest{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px}
+/* 결과 */
+.shared{background:var(--stamp);color:#2b1d00;border-radius:10px;padding:12px 14px;font-weight:800;font-size:14px}
+.hero{display:flex;gap:18px;align-items:center}
+.hero svg{width:104px;height:104px;flex:none}
+.label{font-size:13px;color:var(--muted);font-weight:600}
+.box{background:var(--soft);border-radius:12px;padding:16px;display:grid;gap:10px}
+.mix{display:grid;gap:6px}
+.mixrow{display:grid;grid-template-columns:84px 1fr 40px;gap:8px;align-items:center;font-size:13px}
+.mixbar{height:10px;background:var(--paper);border-radius:99px;overflow:hidden}
+.mixbar i{display:block;height:100%;background:var(--ink)}
+.mixrow.win .mixbar i{background:var(--accent)}
+.mixrow b{font-variant-numeric:tabular-nums;text-align:right}
+ul.picks{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+.school{border:2px dashed var(--stamp);border-radius:12px;padding:16px;display:grid;gap:8px}
+.mates{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mate{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:4px;min-width:0}
+.mate .who{display:flex;align-items:center;gap:8px;font-weight:800}
+.mate svg{width:40px;height:40px;flex:none}
+.mate p{font-size:13px}
+@media (max-width:420px){.mates{grid-template-columns:1fr}}
+.dest{border-top:2px dashed var(--line);padding-top:20px;display:grid;gap:14px}
 .dest-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.code{font-family:var(--mono);font-weight:600;font-size:13px;background:var(--stamp);color:#2b1d00;padding:2px 8px;border-radius:4px}
-.dest h3{margin:0;font-size:20px;font-weight:800}
-.row{font-size:14px}.row b{display:inline-block;min-width:64px;color:var(--muted);font-weight:600}
-.row a{color:var(--accent)}
+.dest h3{font-size:22px}
+.code{font-family:var(--mono);font-weight:600;font-size:13px;background:var(--stamp);color:#2b1d00;padding:2px 8px;border-radius:4px;white-space:nowrap}
+.gallery{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:6px;aspect-ratio:3/2;max-width:100%}
+.gallery figure{margin:0;position:relative;overflow:hidden;border-radius:10px;background:var(--soft);min-width:0}
+.gallery figure:first-child{grid-row:1/3}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block}
+.gallery figcaption{position:absolute;left:6px;bottom:6px;background:rgba(10,25,30,.72);color:#fff;font-size:12px;font-weight:600;padding:2px 8px;border-radius:6px}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
+.fact{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.sec{display:grid;gap:6px}
+.sec h4{margin:0;font-size:14px;font-weight:800}
+.sec ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:15px}
+.sec .warnline{color:var(--warn);font-size:13px;font-weight:600}
+.sec a{color:var(--accent)}
+.credit{font-size:11px;color:var(--muted)}
+.combo{font-family:var(--display);font-size:20px;color:var(--accent);margin-top:-6px}
+.checks{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:14px}
+.checks label{display:flex;gap:8px;align-items:flex-start;cursor:pointer;min-width:0}
+.checks input{margin-top:4px;accent-color:var(--accent)}
+.checks input:checked+*, .checks label:has(input:checked){color:var(--muted);text-decoration:line-through}
+@media (max-width:420px){.checks{grid-template-columns:1fr}}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{font-size:14px;font-weight:600;color:var(--ink);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+.links a:hover{border-color:var(--accent)}
+.credit a{color:var(--muted)}
 .actions{display:grid;gap:8px}
 .toast{font-size:13px;color:var(--muted);min-height:1.4em;text-align:center}
 .note{font-size:12px;color:var(--muted)}
+#imgOut{width:100%;max-width:320px;margin:0 auto;display:block;border-radius:12px;border:1px solid var(--line)}
+.imgbox{display:grid;gap:10px}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
-
+</head>
+<body>
 <div class="wrap">
   <section class="pass" id="s-start">
     <div class="pass-head"><span>BOARDING PASS</span><span>ICN → ???</span></div>
     <div class="pass-body">
       <div class="route"><div>ICN<span class="small">인천</span></div><div class="dash"></div><div>???<span class="small">당신의 여행지</span></div></div>
       <h1>나한테 맞는 여행지는 어디일까?</h1>
-      <p class="muted">조건 5개, 질문 15개에 답하면 여행 유형과 추천 여행지 3곳을 알려드려요. 3분이면 끝나요.</p>
+      <p class="muted">조건 5개, 질문 20개에 답하면 나만의 조합 유형, 학생 시절 모습, 찰떡 여행 메이트, 국내외 추천 여행지 3곳을 알려드려요. 3분이면 끝나요.</p>
       <button class="btn" id="go">테스트 시작</button>
     </div>
   </section>
@@ -86,17 +122,17 @@ p{margin:0}.muted{color:var(--muted)}
   <section class="pass" id="s-cond" hidden>
     <div class="pass-head"><span>STEP 1 · 여행 조건</span><span>5 / 5</span></div>
     <form class="pass-body" id="condForm">
-      <div class="field"><label class="t">여행 기간</label><div class="chips" data-name="days"></div></div>
-      <div class="field"><label class="t">예산 (1인, 항공 포함)</label><div class="chips" data-name="budget"></div></div>
-      <div class="field"><label class="t">출발 시기</label><div class="chips" data-name="season"></div></div>
-      <div class="field"><label class="t">원하는 날씨</label><div class="chips" data-name="weather"></div></div>
-      <div class="field"><label class="t">어떤 곳이 좋아요?</label><div class="chips" data-name="place"></div></div>
+      <div class="field"><span class="t">여행 기간</span><div class="chips" data-name="days"></div></div>
+      <div class="field"><span class="t">예산 (1인, 항공·숙박 포함)</span><div class="chips" data-name="budget"></div></div>
+      <div class="field"><span class="t">출발 시기</span><div class="chips" data-name="season"></div></div>
+      <div class="field"><span class="t">원하는 날씨</span><div class="chips" data-name="weather"></div></div>
+      <div class="field"><span class="t">어떤 곳이 좋아요?</span><div class="chips" data-name="place"></div></div>
       <button class="btn" type="submit">질문 시작하기</button>
     </form>
   </section>
 
   <section class="pass" id="s-q" hidden>
-    <div class="pass-head"><span>STEP 2 · 취향 질문</span><span id="qnum">01 / 15</span></div>
+    <div class="pass-head"><span>STEP 2 · 취향 질문</span><span id="qnum">01 / 20</span></div>
     <div class="pass-body">
       <div class="bar"><i id="barFill" style="width:0%"></i></div>
       <h2 id="qText"></h2>
@@ -114,64 +150,210 @@ p{margin:0}.muted{color:var(--muted)}
 <script>
 const COND = {
   days:[["short","2~3일"],["mid","4~5일"],["long","1주 이상"]],
-  budget:[["low","100만원 이하"],["mid","100~200만원"],["high","200만원 이상"]],
+  budget:[["b1","50만원 이하"],["b2","50~100만원"],["b3","100~200만원"],["b4","200~300만원"],["b5","300만원 이상"]],
   season:[["spring","봄"],["summer","여름"],["fall","가을"],["winter","겨울"]],
   weather:[["warm","따뜻한 곳"],["cool","선선한 곳"],["any","상관없음"]],
   place:[["city","도시"],["resort","휴양지"],["both","둘 다"]]
 };
+const BUDGET = {b1:[0,50],b2:[50,100],b3:[100,200],b4:[200,300],b5:[300,9999]};
+const DEF = {days:"short",budget:"b2",season:"spring",weather:"any",place:"both"};
+
 const TYPES = {
-  explorer:{e:"🧗",n:"모험 개척자",d:"계획표보다 지도 밖이 궁금한 사람. 하이킹, 다이빙처럼 몸으로 부딪히는 경험이 여행의 핵심이에요."},
-  foodie:{e:"🍜",n:"먹방 순례자",d:"여행 동선이 맛집 지도로 그려지는 사람. 시장 골목과 현지 식당에서 그 도시를 기억해요."},
-  healer:{e:"🌴",n:"느긋한 힐러",d:"아무것도 안 하는 것도 일정인 사람. 바다, 수영장, 좋은 숙소에서 충전하는 여행이 잘 맞아요."},
-  urban:{e:"🏙️",n:"도시 산책가",d:"골목, 미술관, 편집숍을 걸으며 도시의 분위기를 모으는 사람. 하루 2만 보도 즐거워요."}
+  explorer:{n:"모험 개척자",col:"#7bbf6a",
+    d:"지도 앱보다 자기 직감을 더 믿는 사람이에요. 동행에게 \"여기 길 맞아?\"를 하루 열 번 듣지만, 결국 제일 멋진 풍경은 당신이 찾아내요. 여행이 끝나면 신발은 너덜너덜, 사진첩은 레전드예요.",
+    school:"선생님이 \"여기서 기다려\" 하면 이미 없어진 학생. 현장체험학습 미아 방송 단골인데, 돌아올 땐 꼭 남들 모르는 지름길이랑 매점 할인 정보를 들고 왔어요. 생활기록부 한 줄 평은 \"호기심이 풍부함\". 번역하면 \"말을 안 들음\".",
+    best:["urban","둘 다 체력이 넘쳐서 하루 3만 보도 가능한 조합. 숙소는 잠만 자는 곳이에요."],
+    worst:["healer","새벽 5시 일출 트레킹을 제안하는 순간 우정에 금이 가요."]},
+  foodie:{n:"먹방 순례자",col:"#f5a35c",
+    d:"관광지는 맛집과 맛집 사이의 이동 경로일 뿐이에요. 하루 다섯 끼가 기본이고, 배가 불러도 \"이건 디저트 배\"라는 과학적 근거를 제시해요. 여행 경비의 절반은 위장에 투자하는 진정한 미식 투자자예요.",
+    school:"2교시 끝나기도 전에 도시락이 이미 비어 있던 학생. 시간표는 못 외워도 급식 메뉴표는 한 달 치를 외웠어요. 수학여행 기억은 \"그 휴게소 호두과자\"가 전부. 장래희망 칸엔 늘 \"맛있는 거 먹는 사람\"이라고 썼죠.",
+    best:["healer","늘어지게 쉬다가 맛집만 쏙쏙 다녀오는 평화 조합이에요."],
+    worst:["urban","카페 인테리어 사진 찍는 동안 음식 식는 걸 못 참아요."]},
+  healer:{n:"느긋한 힐러",col:"#6cc3d5",
+    d:"여행 와서까지 바쁘게 살 이유가 없다는 확고한 철학의 소유자예요. 일정표 대신 수영장 오픈 시간을 체크하고, \"오늘 뭐 했어?\"라는 질문에 \"아무것도\"라고 당당하게 답해요. 남들이 투어 버스 탈 때 선베드 각도를 연구하는 프로 휴식러예요.",
+    school:"쉬는 시간 종 치기 3초 전에 이미 엎드려 있던 학생. 체육대회 땐 응원석 맨 뒷줄 그늘이 지정석이었어요. 수학여행 자유 시간엔 숙소 침대 사진부터 단톡방에 올렸죠. 그런데 이상하게 성적은 멀쩡해서 반 친구들을 열받게 했어요.",
+    best:["foodie","같이 늘어지다가 맛있는 것만 먹으러 나가는 완벽한 휴가 조합이에요."],
+    worst:["explorer","\"내일 새벽 5시 출발!\" 한마디에 조용히 방문을 잠가요."]},
+  urban:{n:"도시 산책가",col:"#a58bd8",
+    d:"도시의 공기를 마시면 체력이 차오르는 사람이에요. 골목 하나, 간판 하나에도 감탄하고, 하루 2만 보를 걸어도 \"벌써 끝이야?\"라고 말해요. 카메라 롤의 절반은 건물 사진, 나머지 절반은 카페 인테리어예요.",
+    school:"필통보다 가방에 달린 키링이 더 많던 학생. 교복을 미세하게 줄여 입고 \"원래 이래요\"를 시전했어요. 수학여행 가면 관광지보다 그 동네 편집숍 위치부터 찾았고, 졸업앨범엔 혼자 필터 낀 것처럼 나왔죠.",
+    best:["explorer","골목 탐험에 지칠 줄 모르는 둘. 동선 짜는 사람과 길 찾는 사람이 딱 나뉘어요."],
+    worst:["foodie","맛집 웨이팅 2시간 vs 전시 하나 더 보기. 매번 협상 테이블이 열려요."]}
 };
-// q: 질문, a/b: [보기, 점수 받는 유형]
+const TYPE_KEYS = ["explorer","foodie","healer","urban"];
+
 const QS = [
-  ["여행 첫날 아침, 눈 뜨자마자 하고 싶은 건?",["현지인 줄 서는 아침 맛집 찾아가기","foodie"],["숙소 조식 먹고 수영장 가기","healer"]],
-  ["일정표는 어떻게 짜요?",["시간 단위로 꼼꼼하게","urban"],["큰 틀만 정하고 그때그때","explorer"]],
-  ["숙소를 고를 때 가장 중요한 건?",["뷰와 수영장, 침구","healer"],["위치! 어디든 걸어갈 수 있게","urban"]],
-  ["여행 사진첩을 열면 가장 많은 사진은?",["음식 사진","foodie"],["풍경과 자연 사진","explorer"]],
-  ["비 오는 날이 되면?",["미술관, 쇼핑몰, 카페 투어","urban"],["숙소에서 낮잠과 마사지","healer"]],
-  ["하루에 얼마나 걷는 게 좋아요?",["2만 보도 괜찮아요","urban"],["최소한만 걷고 싶어요","healer"]],
-  ["액티비티 하나만 고른다면?",["스쿠버다이빙이나 트레킹","explorer"],["현지 쿠킹 클래스","foodie"]],
-  ["기념품으로 사 오는 건?",["현지 간식과 식재료","foodie"],["디자인 소품이나 편집숍 아이템","urban"]],
-  ["처음 보는 길이 나오면?",["일단 들어가 본다","explorer"],["지도 앱으로 확인부터","urban"]],
-  ["여행의 마무리는?",["노을 보며 해변에서 멍때리기","healer"],["야시장에서 마지막 한 입","foodie"]],
-  ["여행 영상을 찍는다면 장르는?",["브이로그 먹방","foodie"],["드론으로 찍은 대자연","explorer"]],
-  ["돈을 아끼지 않는 항목은?",["좋은 숙소","healer"],["체험과 투어","explorer"]],
-  ["저녁 8시, 뭐 하고 있을까요?",["루프탑 바에서 야경 보기","urban"],["숙소에서 컵라면과 넷플릭스","healer"]],
-  ["낯선 음식 앞에서 나는?",["무조건 도전","foodie"],["아는 맛이 좋아요","healer"]],
-  ["여행 다녀와서 가장 자랑하고 싶은 건?",["남들 안 가본 곳에 다녀온 것","explorer"],["그 도시의 핫플을 다 가본 것","urban"]]
+  ["여행 첫날 아침, 눈 뜨자마자 하고 싶은 건?",[["현지인이 줄 서는 아침 맛집 찾아가기","foodie"],["숙소 조식 먹고 수영장 가기","healer"]]],
+  ["일정표는 어떻게 짜요?",[["시간 단위로 꼼꼼하게","urban"],["큰 틀만 정하고 그때그때","explorer"]]],
+  ["숙소를 고를 때 가장 중요한 건?",[["뷰와 수영장, 침구","healer"],["위치! 어디든 걸어갈 수 있게","urban"]]],
+  ["비행기 좌석을 고른다면?",[["비상구 좌석, 내리자마자 튀어 나가야 해","explorer"],["기내식이 빨리 나오는 앞쪽","foodie"],["창가에서 담요 덮고 숙면","healer"],["창가에서 도시 야경 내려다보기","urban"]]],
+  ["여행 사진첩을 열면 가장 많은 사진은?",[["음식 사진","foodie"],["풍경과 자연 사진","explorer"]]],
+  ["비 오는 날이 되면?",[["미술관, 쇼핑몰, 카페 투어","urban"],["숙소에서 낮잠과 마사지","healer"]]],
+  ["동행이 \"오늘 뭐 할까?\" 물으면",[["근교 가는 아무 버스나 타 보자","explorer"],["어제 찾아둔 맛집 리스트 공개","foodie"],["오늘은 숙소 데이… 아무것도 안 할래","healer"],["새로 생긴 전시랑 편집숍 코스 어때?","urban"]]],
+  ["하루에 얼마나 걷는 게 좋아요?",[["2만 보도 괜찮아요","urban"],["최소한만 걷고 싶어요","healer"]]],
+  ["액티비티 하나만 고른다면?",[["스쿠버다이빙이나 트레킹","explorer"],["현지 쿠킹 클래스","foodie"]]],
+  ["여행 가방 속 필수템은?",[["등산화와 보조배터리","explorer"],["소화제와 물티슈","foodie"],["편한 잠옷과 수영복","healer"],["카메라와 제일 예쁜 옷","urban"]]],
+  ["기념품으로 사 오는 건?",[["현지 간식과 식재료","foodie"],["디자인 소품이나 편집숍 아이템","urban"]]],
+  ["처음 보는 길이 나오면?",[["일단 들어가 본다","explorer"],["지도 앱으로 확인부터","urban"]]],
+  ["여행 중 가장 행복한 순간은?",[["정상에 올라 풍경을 내려다볼 때","explorer"],["첫 입 먹고 눈이 커질 때","foodie"],["선베드에서 스르르 잠들 때","healer"],["골목 끝에서 예쁜 카페를 발견할 때","urban"]]],
+  ["여행의 마무리는?",[["노을 보며 해변에서 멍때리기","healer"],["야시장에서 마지막 한 입","foodie"]]],
+  ["여행 영상을 찍는다면 장르는?",[["브이로그 먹방","foodie"],["드론으로 찍은 대자연","explorer"]]],
+  ["돈을 아끼지 않는 항목은?",[["좋은 숙소","healer"],["체험과 투어","explorer"]]],
+  ["예상치 못한 일정 변경! 나의 반응은?",[["오히려 좋아, 새로운 곳 가 보자","explorer"],["그럼 근처 맛집이나 가자","foodie"],["잘됐다, 숙소에서 쉬자","healer"],["대체 코스 검색 들어갑니다","urban"]]],
+  ["저녁 8시, 뭐 하고 있을까요?",[["루프탑 바에서 야경 보기","urban"],["숙소에서 컵라면과 넷플릭스","healer"]]],
+  ["낯선 음식 앞에서 나는?",[["무조건 도전","foodie"],["아는 맛이 좋아요","healer"]]],
+  ["여행 다녀와서 가장 자랑하고 싶은 건?",[["남들 안 가본 곳에 다녀온 것","explorer"],["그 도시의 핫플을 다 가본 것","urban"]]]
 ];
-// 여행지: 공항코드, 이름, 국가, 유형 가중치, 도시/휴양, 날씨, 예산, 기간, 설명, 주의사항, 외교부 국가 검색어
+
+// 주 유형 + 보조 유형 조합 이름 (12가지)
+const MOD = {explorer:"겁 없는",foodie:"배고픈",healer:"느긋한",urban:"힙한"};
+const NOUN = {explorer:"모험가",foodie:"먹방러",healer:"힐러",urban:"산책가"};
+const COMBO = {
+  "explorer-foodie":"산 정상에서도 컵라면 맛집을 찾아내는 사람",
+  "explorer-healer":"모험은 좋지만 낮잠 시간은 사수하는 사람",
+  "explorer-urban":"뒷골목 탐험 끝에 감성 사진까지 건지는 사람",
+  "foodie-explorer":"정체불명 길거리 음식에 제일 먼저 손드는 사람",
+  "foodie-healer":"먹고 자고 먹고 자는 게 여행의 완성인 사람",
+  "foodie-urban":"웨이팅 맛집도 인스타 감성으로 남기는 사람",
+  "healer-explorer":"쉬다가 갑자기 패러글라이딩을 예약하는 사람",
+  "healer-foodie":"선베드 위에서 룸서비스 메뉴판을 정독하는 사람",
+  "healer-urban":"예쁜 호텔 라운지에서 쉬는 게 최고의 휴식인 사람",
+  "urban-explorer":"지도에 없는 골목까지 다 걸어 보는 사람",
+  "urban-foodie":"산책 코스가 곧 디저트 투어인 사람",
+  "urban-healer":"카페 한 곳에서 세 시간을 버티는 도시 여행자"
+};
+
+const W = "https://thumb.wikimedia.org/wikipedia/commons/thumb/";
+const C = "https://commons.wikimedia.org/wiki/File:";
+// photos: [사진 URL, 장소 이름, 작가, 라이선스, 원본 페이지]
 const DESTS = [
-  {c:"DAD",n:"다낭",k:"베트남",t:{healer:3,foodie:2},p:"both",w:"warm",b:"low",d:["short","mid"],x:"바다와 리조트, 저렴한 물가, 근교 호이안 야경까지 한 번에.",warn:"9~12월은 우기라 비가 잦아요. 택시는 그랩 같은 앱 호출이 안전해요.",bad:["fall"]},
-  {c:"BKK",n:"방콕",k:"태국",t:{foodie:3,urban:2},p:"city",w:"warm",b:"low",d:["short","mid"],x:"길거리 음식부터 루프탑 바까지, 밤이 더 재미있는 도시.",warn:"툭툭과 택시 바가지 요금에 주의. 왕궁·사원은 어깨와 무릎을 가리는 복장이 필요해요.",bad:[]},
-  {c:"KIX",n:"오사카",k:"일본",t:{foodie:3,urban:1},p:"city",w:"any",b:"low",d:["short"],x:"가깝고 싸고 맛있는 미식 도시. 교토·나라 당일치기도 쉬워요.",warn:"주말과 연휴엔 인기 식당 대기가 길어요. 현금만 받는 가게가 아직 있어요.",bad:[]},
-  {c:"TYO",n:"도쿄",k:"일본",t:{urban:3,foodie:1},p:"city",w:"any",b:"mid",d:["short","mid"],x:"동네마다 분위기가 다른 거대한 산책 코스. 쇼핑과 전시가 끝이 없어요.",warn:"교통비가 쌓이면 꽤 비싸요. 지하철 노선이 복잡하니 환승 앱을 준비하세요.",bad:[]},
-  {c:"TPE",n:"타이베이",k:"대만",t:{foodie:3,urban:1},p:"city",w:"warm",b:"low",d:["short"],x:"야시장과 우육면, 근교 지우펀까지. 짧은 일정에 딱 맞아요.",warn:"여름~초가을엔 태풍 소식을 꼭 확인하세요. 오토바이가 많아 횡단보도에서도 주의.",bad:["summer"]},
-  {c:"CEB",n:"세부",k:"필리핀",t:{explorer:3,healer:2},p:"resort",w:"warm",b:"mid",d:["short","mid"],x:"호핑 투어와 다이빙, 고래상어 체험까지 바다 액티비티 천국.",warn:"해양 액티비티는 안전장비와 업체 후기를 확인하세요. 귀중품은 숙소 금고에.",bad:[]},
-  {c:"DPS",n:"발리",k:"인도네시아",t:{healer:3,explorer:2},p:"resort",w:"warm",b:"mid",d:["mid","long"],x:"논뷰 풀빌라, 서핑, 사원. 쉬는 것도 노는 것도 다 되는 섬.",warn:"원숭이 숲에선 안경·모자 같은 소지품을 조심. 수돗물은 마시지 마세요.",bad:[]},
-  {c:"CTS",n:"삿포로",k:"일본",t:{foodie:2,healer:2},p:"both",w:"cool",b:"mid",d:["short","mid"],x:"겨울엔 설경과 온천, 여름엔 라벤더 밭. 해산물과 수프카레도 별미.",warn:"겨울엔 빙판길이 미끄러워요. 미끄럼 방지 신발이나 아이젠을 챙기세요.",bad:[],good:["winter","summer"]},
-  {c:"SIN",n:"싱가포르",k:"싱가포르",t:{urban:3,foodie:2},p:"city",w:"warm",b:"high",d:["short","mid"],x:"깨끗하고 안전한 도시에 호커센터 맛집과 야경 명소가 가득.",warn:"흡연·쓰레기 투기 등 벌금 규정이 엄격해요. 물가가 높은 편이에요.",bad:[]},
-  {c:"PAR",n:"파리",k:"프랑스",t:{urban:3,foodie:2},p:"city",w:"cool",b:"high",d:["long"],x:"미술관, 카페, 산책. 걷기만 해도 영화 같은 도시.",warn:"관광지와 지하철 소매치기가 많아요. 가방은 앞으로 메세요.",bad:[]},
-  {c:"ZRH",n:"인터라켄",k:"스위스",t:{explorer:3,healer:1},p:"resort",w:"cool",b:"high",d:["long"],x:"알프스 하이킹, 패러글라이딩, 호수 풍경. 대자연 그 자체.",warn:"산 위 날씨가 급변해요. 방풍 겉옷을 챙기고 물가가 매우 높아요.",bad:["winter"]},
-  {c:"HNL",n:"호놀룰루",k:"미국",t:{healer:3,explorer:1},p:"resort",w:"warm",b:"high",d:["mid","long"],x:"와이키키 해변과 다이아몬드헤드 트레킹. 휴양과 쇼핑을 한 번에.",warn:"자외선이 강해요. 산호 보호용 선크림을 쓰세요. 미국 입국용 ESTA가 필요해요.",bad:[]},
-  {c:"BCN",n:"바르셀로나",k:"스페인",t:{urban:3,foodie:2},p:"both",w:"warm",b:"high",d:["long"],x:"가우디 건축과 해변, 타파스 바. 도시와 바다를 다 즐겨요.",warn:"유럽에서 소매치기가 많기로 유명해요. 람블라스 거리에서 특히 조심하세요.",bad:[]}
+  {c:"DAD",from:"ICN",air:"dad",en:"Da Nang",check:["여권 (만료 6개월 이상 남은 것)", "모기 기피제", "얇은 긴팔 (에어컨·사원용)", "그랩 앱 설치", "환전용 달러 소액권"],n:"다낭",k:"베트남",t:{healer:3,foodie:2},p:"both",w:"warm",cost:[50,100],d:["short","mid"],season:"2~5월 (건기)",stay:"3박 4일~4박 5일",bad:["fall"],
+   fit:"리조트에서 푹 쉬다가 저녁엔 호이안 등불 야경까지 볼 수 있어요",
+   spots:[["용다리","주말 밤 9시, 용이 진짜로 불과 물을 뿜어요"],["바나힐 골든브릿지","거대한 손이 받치고 있는 구름 위 다리"],["호이안 올드타운","밤마다 등불이 켜지는 옛 무역항 거리"]],
+   foods:["마담 란 (베트남 가정식)","반쎄오 바즈엉 (반쎄오)","미꽝 1A (다낭식 비빔국수)"],
+   warn:"9~12월은 우기라 비가 잦아요. 택시는 그랩 같은 앱 호출이 안전해요.",
+   photos:[[W+"4/4a/C%E1%BA%A7u_R%E1%BB%93ng.jpg/1280px-C%E1%BA%A7u_R%E1%BB%93ng.jpg","용다리","Bùi Thụy Đào Nguyên","CC BY-SA 3.0",C+"C%E1%BA%A7u_R%E1%BB%93ng.jpg"],[W+"0/0c/Golden_Bridge_at_Ba_Na_Hills_20250718.jpg/1280px-Golden_Bridge_at_Ba_Na_Hills_20250718.jpg","골든브릿지","DvTor8303","CC0",C+"Golden_Bridge_at_Ba_Na_Hills_20250718.jpg"],[W+"2/27/10549-Hoi-An_%2837621348460%29.jpg/1280px-10549-Hoi-An_%2837621348460%29.jpg","호이안","xiquinhosilva","CC BY 2.0",C+"10549-Hoi-An_(37621348460).jpg"]]},
+  {c:"BKK",from:"ICN",air:"bkk",en:"Bangkok",check:["여권", "사원용 긴바지·숄", "그랩 앱 설치", "선크림", "휴대용 선풍기"],n:"방콕",k:"태국",t:{foodie:3,urban:2},p:"city",w:"warm",cost:[50,120],d:["short","mid"],season:"11~2월 (건기, 덜 더움)",stay:"3박 4일~4박 5일",bad:[],
+   fit:"길거리 음식부터 루프탑 바까지, 밤이 더 재미있는 도시예요",
+   spots:[["왓 아룬","강변에 선 새벽 사원, 해 질 녘이 제일 예뻐요"],["왕궁·왓 프라깨우","태국에서 가장 화려한 사원과 궁전"],["짜뚜짝 주말시장","가게만 1만 개가 넘는 초대형 시장"]],
+   foods:["팁싸마이 (팟타이)","제이 파이 (게살 오믈렛)","쪽 프린스 (태국식 죽)"],
+   warn:"툭툭과 택시 바가지 요금에 주의하세요. 왕궁·사원은 어깨와 무릎을 가리는 복장이 필요해요.",
+   photos:[[W+"2/2a/%E0%B9%80%E0%B8%88%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B9%8C%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%98%E0%B8%B2%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AD%E0%B8%A3%E0%B8%B8%E0%B8%932.jpg/1280px-%E0%B9%80%E0%B8%88%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B9%8C%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%98%E0%B8%B2%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AD%E0%B8%A3%E0%B8%B8%E0%B8%932.jpg","왓 아룬","Mastertongapollo","CC BY-SA 4.0",C+"%E0%B9%80%E0%B8%88%E0%B8%94%E0%B8%B5%E0%B8%A2%E0%B9%8C%E0%B8%9B%E0%B8%A3%E0%B8%B0%E0%B8%98%E0%B8%B2%E0%B8%99%E0%B8%97%E0%B8%A3%E0%B8%87%E0%B8%9B%E0%B8%A3%E0%B8%B2%E0%B8%87%E0%B8%84%E0%B9%8C%E0%B8%A7%E0%B8%B1%E0%B8%94%E0%B8%AD%E0%B8%A3%E0%B8%B8%E0%B8%932.jpg"],[W+"c/c7/0005574_-_Wat_Phra_Kaew_006.jpg/1280px-0005574_-_Wat_Phra_Kaew_006.jpg","왓 프라깨우","Preecha.MJ","CC BY-SA 4.0",C+"0005574_-_Wat_Phra_Kaew_006.jpg"],[W+"3/33/Bangkok_-_Jatujak_Market_02.JPG/1280px-Bangkok_-_Jatujak_Market_02.JPG","짜뚜짝 시장","Azreey","CC BY-SA 3.0",C+"Bangkok_-_Jatujak_Market_02.JPG"]]},
+  {c:"KIX",from:"ICN",air:"kix",en:"Osaka",check:["여권", "교통카드 (ICOCA) 또는 모바일 교통카드", "현금 (엔화)", "편한 운동화", "110V 돼지코 어댑터"],n:"오사카",k:"일본",t:{foodie:3,urban:1},p:"city",w:"any",cost:[50,100],d:["short"],season:"3~5월, 10~11월",stay:"2박 3일~3박 4일",bad:[],
+   fit:"가깝고 먹거리가 많아서 짧게 다녀오기 딱 좋아요",
+   spots:[["오사카성","벚꽃 시즌엔 성 전체가 분홍색으로 물들어요"],["도톤보리","글리코 간판 앞 인증샷은 필수예요"],["유니버설 스튜디오 재팬","닌텐도 월드와 해리 포터 구역이 인기예요"]],
+   foods:["551 호라이 (돼지고기 만두)","쿠시카츠 다루마 (꼬치튀김)","미즈노 (오코노미야키)"],
+   warn:"주말과 연휴엔 인기 식당 대기가 길어요. 현금만 받는 가게가 아직 있어요.",
+   photos:[[W+"c/ca/Osaka_Castle_03bs3200.jpg/1280px-Osaka_Castle_03bs3200.jpg","오사카성","663highland","CC BY 2.5",C+"Osaka_Castle_03bs3200.jpg"],[W+"f/f4/Osaka_Dotonbori_Ebisu_Bridge.jpg/1280px-Osaka_Dotonbori_Ebisu_Bridge.jpg","도톤보리","Type specimen","CC BY-SA 3.0",C+"Osaka_Dotonbori_Ebisu_Bridge.jpg"],[W+"9/9d/Universal_Studios_in_Japan.jpg/1280px-Universal_Studios_in_Japan.jpg","USJ","Leeyj0401","CC BY-SA 4.0",C+"Universal_Studios_in_Japan.jpg"]]},
+  {c:"TYO",from:"ICN",air:"tyo",en:"Tokyo",check:["여권", "교통카드 (Suica) 또는 모바일 교통카드", "현금 (엔화)", "편한 운동화", "110V 돼지코 어댑터"],n:"도쿄",k:"일본",t:{urban:3,foodie:1},p:"city",w:"any",cost:[70,150],d:["short","mid"],season:"3~4월, 10~11월",stay:"3박 4일~4박 5일",bad:[],
+   fit:"동네마다 분위기가 달라서 걸어 다니며 구경할 거리가 끝이 없어요",
+   spots:[["센소지","도쿄에서 가장 오래된 절, 가미나리몬 등불이 상징이에요"],["시부야 스크램블 교차로","한 번에 수천 명이 건너는 세계에서 가장 바쁜 횡단보도"],["도쿄타워","밤이 되면 주황빛으로 빛나는 도쿄의 랜드마크"]],
+   foods:["후운지 (츠케멘)","아후리 (유자 시오 라멘)","츠키지 장외시장 (스시·해산물 골목)"],
+   warn:"교통비가 쌓이면 꽤 비싸요. 지하철 노선이 복잡하니 환승 앱을 준비하세요.",
+   photos:[[W+"4/43/Sensoji_2023.jpg/1280px-Sensoji_2023.jpg","센소지","Akonnchiroll","CC0",C+"Sensoji_2023.jpg"],[W+"8/88/Shibuya_Crossing%2C_Aerial.jpg/1280px-Shibuya_Crossing%2C_Aerial.jpg","시부야","David Kernan","CC BY 4.0",C+"Shibuya_Crossing,_Aerial.jpg"],[W+"5/58/Tokyo_Tower_2023.jpg/1280px-Tokyo_Tower_2023.jpg","도쿄타워","Akonnchiroll","CC BY-SA 4.0",C+"Tokyo_Tower_2023.jpg"]]},
+  {c:"TPE",from:"ICN",air:"tpe",en:"Taipei",check:["여권", "접이식 우산 (스콜 대비)", "이지카드 (교통카드)", "현금 (대만 달러)", "110V 돼지코 어댑터"],n:"타이베이",k:"대만",t:{foodie:3,urban:1},p:"city",w:"warm",cost:[50,100],d:["short"],season:"10~12월, 3~4월",stay:"2박 3일~3박 4일",bad:["summer"],
+   fit:"야시장과 근교 여행을 짧은 일정에 알차게 몰아서 즐길 수 있어요",
+   spots:[["중정기념당","하얀 건물과 파란 지붕, 근위병 교대식이 볼거리예요"],["지우펀","홍등이 켜지는 산비탈 찻집 마을"],["스린 야시장","타이베이에서 가장 큰 야시장"]],
+   foods:["딘타이펑 신의 본점 (샤오롱바오)","융캉 우육면 (우육면)","아종면선 (곱창 국수)"],
+   warn:"여름~초가을엔 태풍 소식을 꼭 확인하세요. 오토바이가 많아 횡단보도에서도 주의하세요.",
+   photos:[[W+"d/d2/Chiang_Kai-shek_memorial_amk.jpg/1280px-Chiang_Kai-shek_memorial_amk.jpg","중정기념당","AngMoKio","CC BY-SA 3.0",C+"Chiang_Kai-shek_memorial_amk.jpg"],[W+"a/a5/A-mei_Tea_House.jpg/1280px-A-mei_Tea_House.jpg","지우펀","lumoplank","CC0",C+"A-mei_Tea_House.jpg"],[W+"c/cf/Shilin_night_market_alley_2.jpg/1280px-Shilin_night_market_alley_2.jpg","스린 야시장","Public domain","Public domain",C+"Shilin_night_market_alley_2.jpg"]]},
+  {c:"CEB",from:"ICN",air:"ceb",en:"Cebu",check:["여권", "래시가드·아쿠아슈즈", "방수팩", "모기 기피제", "선크림"],n:"세부",k:"필리핀",t:{explorer:3,healer:2},p:"resort",w:"warm",cost:[70,150],d:["short","mid"],season:"12~5월 (건기)",stay:"3박 4일~4박 5일",bad:[],
+   fit:"바다 액티비티와 리조트 휴식을 한 번에 챙길 수 있어요",
+   spots:[["카와산 폭포","에메랄드빛 폭포를 따라 내려가는 캐녀닝"],["모알보알","수만 마리 정어리 떼와 함께하는 스노클링"],["마젤란 십자가","세부 시내 역사 산책의 출발점"]],
+   foods:["주부촌 (레촌, 통돼지 구이)","하우스 오브 레촌 (레촌)","라르시안 바비큐 (꼬치구이 거리)"],
+   warn:"해양 액티비티는 안전장비와 업체 후기를 꼭 확인하세요. 귀중품은 숙소 금고에 두세요.",
+   photos:[[W+"e/e9/Kawasan_Falls_Level_1%2C_Badian%2C_Cebu_in_2026.jpg/1280px-Kawasan_Falls_Level_1%2C_Badian%2C_Cebu_in_2026.jpg","카와산 폭포","A.C.T. Alejandre","CC BY-SA 4.0",C+"Kawasan_Falls_Level_1,_Badian,_Cebu_in_2026.jpg"],[W+"8/8f/Moalboal_2025-07-05_021.jpg/1280px-Moalboal_2025-07-05_021.jpg","모알보알","Martin Michlmayr","CC BY-SA 4.0",C+"Moalboal_2025-07-05_021.jpg"],[W+"1/17/Magellan%27s_Cross_2024-07-05.jpg/1280px-Magellan%27s_Cross_2024-07-05.jpg","마젤란 십자가","LMP 2001","CC BY-SA 4.0",C+"Magellan%27s_Cross_2024-07-05.jpg"]]},
+  {c:"DPS",from:"ICN",air:"dps",en:"Bali",check:["여권", "모기 기피제", "수영복", "선크림", "사원용 사롱 (현지 대여 가능)"],n:"발리",k:"인도네시아",t:{healer:3,explorer:2},p:"resort",w:"warm",cost:[100,200],d:["mid","long"],season:"4~10월 (건기)",stay:"4박 5일~6박 7일",bad:[],
+   fit:"풀빌라 휴식, 서핑, 사원 투어까지 원하는 만큼 골라 즐겨요",
+   spots:[["울루와뚜 사원","절벽 위 사원에서 보는 일몰과 께짝 댄스"],["따나롯 사원","밀물 때 바다 위에 뜬 것처럼 보이는 사원"],["우붓 몽키 포레스트","원숭이 수백 마리가 사는 숲속 사원"]],
+   foods:["와룽 이부 오카 (바비 굴링)","베벡 벵길 (더티 덕)","너티 누리스 (폭립)"],
+   warn:"원숭이 숲에선 안경, 모자 같은 소지품을 조심하세요. 수돗물은 마시지 마세요.",
+   photos:[[W+"5/57/Pura_Luhur_Uluwatu_2017-08-17_%2834%29.jpg/1280px-Pura_Luhur_Uluwatu_2017-08-17_%2834%29.jpg","울루와뚜","Paskuu","CC BY-SA 4.0",C+"Pura_Luhur_Uluwatu_2017-08-17_(34).jpg"],[W+"8/8d/TanahLot_2014.JPG/1280px-TanahLot_2014.JPG","따나롯","Grayswoodsurrey","CC BY-SA 4.0",C+"TanahLot_2014.JPG"],[W+"4/46/Monkey_Forest.jpg/1280px-Monkey_Forest.jpg","몽키 포레스트","Merbabu","CC BY-SA 3.0",C+"Monkey_Forest.jpg"]]},
+  {c:"CTS",from:"ICN",air:"cts",en:"Sapporo",check:["여권", "아이젠·방한화 (겨울)", "핫팩", "현금 (엔화)", "110V 돼지코 어댑터"],n:"삿포로",k:"일본",t:{foodie:2,healer:2},p:"both",w:"cool",cost:[80,150],d:["short","mid"],season:"2월 (눈축제), 7~8월 (라벤더)",stay:"3박 4일",bad:[],good:["winter","summer"],
+   fit:"선선한 날씨에 설경이나 꽃밭, 해산물까지 챙길 수 있어요",
+   spots:[["오도리 공원","도심 한가운데 길게 뻗은 공원, 겨울엔 눈축제 메인 무대"],["삿포로 눈축제","2월에만 볼 수 있는 거대한 눈과 얼음 조각"],["비에이","끝없이 이어지는 언덕과 꽃밭"]],
+   foods:["스프카레 가라쿠 (스프카레)","징기스칸 다루마 (양고기 구이)","니조 시장 (해산물 덮밥)"],
+   warn:"겨울엔 빙판길이 미끄러워요. 미끄럼 방지 신발이나 아이젠을 챙기세요.",
+   photos:[[W+"0/0d/Hokkaido_Sapporo_Odori_Park.jpg/1280px-Hokkaido_Sapporo_Odori_Park.jpg","오도리 공원","Nkns","CC BY-SA 3.0",C+"Hokkaido_Sapporo_Odori_Park.jpg"],[W+"a/a2/SapporoFestival8.JPG/1280px-SapporoFestival8.JPG","눈축제","Materialscientist","CC BY-SA 3.0",C+"SapporoFestival8.JPG"],["https://upload.wikimedia.org/wikipedia/commons/e/e7/Biei_Hokkaido.jpg","비에이","Jialiang Gao","CC BY-SA 3.0",C+"Biei_Hokkaido.jpg"]]},
+  {c:"SIN",from:"ICN",air:"sin",en:"Singapore",check:["여권", "얇은 겉옷 (실내 에어컨)", "접이식 우산", "멀티 어댑터 (G타입)", "선크림"],n:"싱가포르",k:"싱가포르",t:{urban:3,foodie:2},p:"city",w:"warm",cost:[100,200],d:["short","mid"],season:"2~4월 (비가 비교적 적음)",stay:"3박 4일",bad:[],
+   fit:"깨끗하고 안전한 도시에서 야경과 호커센터 맛집을 즐겨요",
+   spots:[["마리나 베이 샌즈","옥상 수영장과 레이저 쇼가 유명한 호텔"],["가든스 바이 더 베이","밤마다 빛나는 슈퍼트리 숲"],["멀라이언 공원","물 뿜는 사자 동상 앞 인증샷 명소"]],
+   foods:["송파 바쿠테 (바쿠테)","티안티안 하이난 치킨라이스 (치킨라이스)","점보 씨푸드 (칠리크랩)"],
+   warn:"흡연, 쓰레기 투기 등 벌금 규정이 엄격해요. 물가가 높은 편이에요.",
+   photos:[[W+"c/c7/Marina_Bay_Sands_%28I%29.jpg/1280px-Marina_Bay_Sands_%28I%29.jpg","마리나 베이 샌즈","Supanut Arunoprayote","CC BY 4.0",C+"Marina_Bay_Sands_(I).jpg"],[W+"5/5d/Supertree_Grove%2C_Gardens_by_the_Bay%2C_Singapore_-_20120712-02.jpg/1280px-Supertree_Grove%2C_Gardens_by_the_Bay%2C_Singapore_-_20120712-02.jpg","가든스 바이 더 베이","Shiny Things","CC BY 2.0",C+"Supertree_Grove,_Gardens_by_the_Bay,_Singapore_-_20120712-02.jpg"],[W+"8/81/Singapore_Merlion_BCT.jpg/1280px-Singapore_Merlion_BCT.jpg","멀라이언","Bjørn Christian Tørrissen","CC BY-SA 3.0",C+"Singapore_Merlion_BCT.jpg"]]},
+  {c:"PAR",from:"ICN",air:"pari",en:"Paris",check:["여권", "앞으로 메는 가방", "편한 신발", "멀티 어댑터 (C타입)", "박물관 예약 확인"],n:"파리",k:"프랑스",t:{urban:3,foodie:2},p:"city",w:"cool",cost:[250,400],d:["long"],season:"4~6월, 9~10월",stay:"6박 8일 이상",bad:[],
+   fit:"미술관, 카페, 산책. 걷기만 해도 영화 같은 도시예요",
+   spots:[["에펠탑","정각마다 반짝이는 밤의 에펠탑은 꼭 보세요"],["루브르 박물관","모나리자를 보려면 아침 일찍 가는 게 좋아요"],["몽마르트르","사크레쾨르 대성당 계단에서 보는 파리 전경"]],
+   foods:["부이용 샤르티에 (전통 프랑스 식당)","라뒤레 (마카롱)","르 를레 드 랑트르코트 (스테이크 프리트)"],
+   warn:"관광지와 지하철에 소매치기가 많아요. 가방은 앞으로 메세요.",
+   photos:[[W+"8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/1280px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg","에펠탑","Benh LIEU SONG","Public domain",C+"Tour_Eiffel_Wikimedia_Commons_(cropped).jpg"],[W+"6/66/Louvre_Museum_Wikimedia_Commons.jpg/1280px-Louvre_Museum_Wikimedia_Commons.jpg","루브르","Benh LIEU SONG","CC BY-SA 3.0",C+"Louvre_Museum_Wikimedia_Commons.jpg"],[W+"c/c5/Le_sacre_coeur.jpg/1280px-Le_sacre_coeur.jpg","몽마르트르","Tonchino","CC BY-SA 3.0",C+"Le_sacre_coeur.jpg"]]},
+  {c:"ZRH",from:"ICN",air:"zrh",en:"Interlaken",check:["여권", "방풍 재킷", "등산화", "선글라스", "스위스 트래블 패스 확인"],n:"인터라켄",k:"스위스",t:{explorer:3,healer:1},p:"resort",w:"cool",cost:[300,500],d:["long"],season:"6~9월",stay:"6박 8일 이상 (스위스 일주와 함께)",bad:["winter"],
+   fit:"알프스 하이킹, 패러글라이딩, 호수 풍경. 대자연 그 자체예요",
+   spots:[["융프라우요흐","해발 3,454m, 유럽에서 가장 높은 기차역"],["툰 호수","에메랄드빛 호수 위 유람선"],["그린델발트","알프스 봉우리가 병풍처럼 둘러싼 마을"]],
+   foods:["융프라우요흐 전망대 (컵라면, 한국인 필수 코스)","하더 쿨름 파노라마 레스토랑","후시 비어하우스 (스위스 맥주·소시지)"],
+   warn:"산 위 날씨가 급변해요. 방풍 겉옷을 챙기세요. 물가가 매우 높아요.",
+   photos:[[W+"0/0e/Sphinx_et_Jungfrau_-_img_06980.jpg/1280px-Sphinx_et_Jungfrau_-_img_06980.jpg","융프라우요흐","Pmau","CC BY-SA 4.0",C+"Sphinx_et_Jungfrau_-_img_06980.jpg"],[W+"6/65/Aerial_image_of_Lake_Thun_%28view_from_the_east%29.jpg/1280px-Aerial_image_of_Lake_Thun_%28view_from_the_east%29.jpg","툰 호수","Carsten Steger","CC BY-SA 4.0",C+"Aerial_image_of_Lake_Thun_(view_from_the_east).jpg"],[W+"b/ba/Grindelwald_View_02.jpg/1280px-Grindelwald_View_02.jpg","그린델발트","Cristo Vlahos","CC BY-SA 3.0",C+"Grindelwald_View_02.jpg"]]},
+  {c:"HNL",from:"ICN",air:"hnl",en:"Honolulu",check:["여권", "ESTA 승인 확인", "산호 보호 선크림", "수영복", "하나우마 베이 입장 예약"],n:"호놀룰루",k:"미국 하와이",t:{healer:3,explorer:1},p:"resort",w:"warm",cost:[200,350],d:["mid","long"],season:"4~10월",stay:"4박 6일~5박 7일",bad:[],
+   fit:"와이키키 해변에서 쉬다가 트레킹, 쇼핑까지 다 돼요",
+   spots:[["와이키키 해변","서핑 입문하기 좋은 하와이 대표 해변"],["다이아몬드 헤드","40분 등산이면 오아후 전경이 한눈에"],["하나우마 베이","열대어와 함께하는 스노클링 명소 (예약 필요)"]],
+   foods:["레오나즈 베이커리 (말라사다 도넛)","헬레나스 하와이안 푸드 (하와이 전통 음식)","마루가메 우동 와이키키 (우동)"],
+   warn:"자외선이 강해요. 산호 보호용 선크림을 쓰세요. 미국 입국용 ESTA가 필요해요.",
+   photos:[[W+"f/fd/City_of_Waikiki_view.jpg/1280px-City_of_Waikiki_view.jpg","와이키키","Pickle the cool","CC BY-SA 4.0",C+"City_of_Waikiki_view.jpg"],[W+"9/93/Diamond_Head_Hawaii_From_Round_Top_Rd.JPG/1280px-Diamond_Head_Hawaii_From_Round_Top_Rd.JPG","다이아몬드 헤드","mar1865","CC BY-SA 3.0",C+"Diamond_Head_Hawaii_From_Round_Top_Rd.JPG"],[W+"e/ec/Hanauma_Bay.JPG/1280px-Hanauma_Bay.JPG","하나우마 베이","ErgoSum88","Public domain",C+"Hanauma_Bay.JPG"]]},
+  {c:"BCN",from:"ICN",air:"bcn",en:"Barcelona",check:["여권", "앞으로 메는 가방·지퍼 지갑", "사그라다 파밀리아 예약", "멀티 어댑터 (C타입)", "선크림"],n:"바르셀로나",k:"스페인",t:{urban:3,foodie:2},p:"both",w:"warm",cost:[250,400],d:["long"],season:"5~6월, 9~10월",stay:"6박 8일 이상",bad:[],
+   fit:"가우디 건축과 해변, 타파스 바까지 도시와 바다를 다 즐겨요",
+   spots:[["사그라다 파밀리아","140년 넘게 짓고 있는 가우디의 대성당"],["구엘 공원","동화 같은 모자이크 타일 공원"],["보케리아 시장","생과일주스와 하몽이 가득한 시장"]],
+   foods:["시우다드 콘달 (타파스)","엘 샴파녜트 (카바와 타파스)","칸 솔레 (해산물 빠에야)"],
+   warn:"유럽에서 소매치기가 많기로 유명해요. 람블라스 거리에서 특히 조심하세요.",
+   photos:[["https://upload.wikimedia.org/wikipedia/commons/e/ef/SF_maig_2_cropped.jpg","사그라다 파밀리아","Canaan","CC BY-SA 4.0",C+"SF_maig_2_cropped.jpg"],[W+"3/33/Parc_guell_-_panoramio.jpg/1280px-Parc_guell_-_panoramio.jpg","구엘 공원","essetefano","CC BY 3.0",C+"Parc_guell_-_panoramio.jpg"],[W+"9/96/Barcelona_-_Mercat_de_Sant_Josep_%28la_Boqueria%29_-_Entrance.jpg/1280px-Barcelona_-_Mercat_de_Sant_Josep_%28la_Boqueria%29_-_Entrance.jpg","보케리아","Didier Descouens","CC BY-SA 4.0",C+"Barcelona_-_Mercat_de_Sant_Josep_(la_Boqueria)_-_Entrance.jpg"]]},
+  {c:"CJU",from:"GMP",dom:true,air:"gmp/cju",en:"Jeju",n:"제주",k:"대한민국",t:{healer:3,explorer:2},p:"both",w:"any",cost:[30,80],d:["short","mid"],season:"4~6월, 9~10월",stay:"2박 3일~3박 4일",bad:[],
+   check:["신분증","렌터카 예약·운전면허증","바람막이","편한 신발","접이식 우산"],
+   fit:"비행기 1시간이면 바다, 오름, 카페 투어가 한 번에 돼요",
+   spots:[["성산일출봉","분화구 위에서 보는 일출이 유명한 세계자연유산"],["협재 해수욕장","에메랄드빛 바다와 비양도 풍경"],["한라산","정상 백록담까지 왕복 8~9시간, 체력 자신 있다면 도전"]],
+   foods:["자매국수 (고기국수)","우진해장국 (고사리 육개장)","동문재래시장 (야시장 먹거리)"],
+   warn:"렌터카가 없으면 이동이 불편해요. 바람이 강한 날이 많으니 일정에 여유를 두세요.",
+   photos:[[W+"6/61/Seongsan_Ilchulbong_from_the_air.jpg/1280px-Seongsan_Ilchulbong_from_the_air.jpg","성산일출봉","Korea.net","CC BY-SA 2.0",C+"Seongsan_Ilchulbong_from_the_air.jpg"],[W+"c/c9/Hyeopjae.jpg/1280px-Hyeopjae.jpg","협재 해수욕장","Lcarrion88","CC BY-SA 4.0",C+"Hyeopjae.jpg"],["https://upload.wikimedia.org/wikipedia/commons/9/9d/Hallasan_Above.jpg","한라산","LG전자","CC BY 2.0",C+"Hallasan_Above.jpg"]]},
+  {c:"PUS",from:"서울",dom:true,ktx:true,en:"Busan",n:"부산",k:"대한민국",t:{foodie:3,urban:2},p:"both",w:"any",cost:[20,50],d:["short"],season:"5~6월, 9~10월",stay:"1박 2일~2박 3일",bad:[],
+   check:["신분증","KTX 예매","편한 신발","보조배터리","여름엔 수영복"],
+   fit:"KTX 한 번이면 바다, 시장, 야경까지 다 챙길 수 있어요",
+   spots:[["해운대 해수욕장","부산 대표 해변, 밤엔 해변열차와 블루라인파크도"],["감천문화마을","알록달록 계단식 마을, 어린왕자 포토존"],["광안대교","밤마다 조명이 바뀌는 다리, 광안리 해변에서 보세요"]],
+   foods:["본전돼지국밥 (돼지국밥)","개미집 (낙곱새)","이재모피자 (치즈 피자)"],
+   warn:"여름 성수기 해운대는 숙소 가격이 크게 올라요. 주말 KTX는 일찍 예매하세요.",
+   photos:[[W+"e/ea/Haeundae_Beach_May_2024.jpg/1280px-Haeundae_Beach_May_2024.jpg","해운대","Brit in Seoul","CC BY-SA 4.0",C+"Haeundae_Beach_May_2024.jpg"],[W+"e/ee/Gamcheon_Houses%2C_2024.jpg/1280px-Gamcheon_Houses%2C_2024.jpg","감천문화마을","Bl00dnFl4mes","CC BY-SA 4.0",C+"Gamcheon_Houses,_2024.jpg"],[W+"5/5d/Gwangan_Bridge1.jpg/1280px-Gwangan_Bridge1.jpg","광안대교","Glabb","Public domain",C+"Gwangan_Bridge1.jpg"]]},
+  {c:"GNG",from:"서울",dom:true,ktx:true,en:"Gangneung",n:"강릉",k:"대한민국",t:{healer:2,foodie:2,urban:1},p:"both",w:"any",cost:[15,40],d:["short"],season:"6~8월 (바다), 10월 (단풍)",stay:"1박 2일",bad:[],
+   check:["신분증","KTX 예매","얇은 겉옷 (바닷바람)","텀블러 (카페 투어)","보조배터리"],
+   fit:"KTX로 2시간, 바다 보며 커피 한 잔이면 충전 완료예요",
+   spots:[["경포해변","넓은 백사장과 경포호를 같이 즐길 수 있어요"],["안목해변 커피거리","바다를 따라 카페가 줄지어 있는 거리"],["오죽헌","검은 대나무 숲과 신사임당·율곡 이이의 생가"]],
+   foods:["동화가든 (짬뽕순두부)","테라로사 (커피)","강릉 중앙시장 (닭강정·감자전)"],
+   warn:"주말과 휴가철엔 KTX 표가 빨리 매진돼요. 바닷바람이 차니 겉옷을 챙기세요.",
+   photos:[[W+"a/a9/%EA%B2%BD%ED%8F%AC%ED%95%B4%EB%B3%80.jpg/1280px-%EA%B2%BD%ED%8F%AC%ED%95%B4%EB%B3%80.jpg","경포해변","Iddd00","CC BY-SA 4.0",C+"%EA%B2%BD%ED%8F%AC%ED%95%B4%EB%B3%80.jpg"],["https://upload.wikimedia.org/wikipedia/commons/0/0b/%EC%95%88%EB%AA%A9%ED%95%B4%EB%B3%80%2C_AM_%EB%A3%A8%ED%94%84%ED%83%91%EC%97%90%EC%84%9C_%EB%B3%B8_%ED%92%8D%EA%B2%BD.jpg","안목해변","가온파파","CC BY 2.0 KR",C+"%EC%95%88%EB%AA%A9%ED%95%B4%EB%B3%80,_AM_%EB%A3%A8%ED%94%84%ED%83%91%EC%97%90%EC%84%9C_%EB%B3%B8_%ED%92%8D%EA%B2%BD.jpg"],[W+"1/14/Ojukheon_sarangchae.jpg/1280px-Ojukheon_sarangchae.jpg","오죽헌","Altostratus","CC BY-SA 4.0",C+"Ojukheon_sarangchae.jpg"]]}
 ];
+
+/* 유형 캐릭터 (직접 그린 SVG) */
+function charSVG(type){
+  const col=TYPES[type].col;
+  const face=`<ellipse cx="60" cy="70" rx="40" ry="37" fill="${col}"/><ellipse cx="60" cy="80" rx="26" ry="18" fill="#fff" opacity=".25"/>`;
+  const eyes=`<circle cx="47" cy="66" r="4.5" fill="#1d2a2e"/><circle cx="73" cy="66" r="4.5" fill="#1d2a2e"/><circle cx="48.5" cy="64.5" r="1.4" fill="#fff"/><circle cx="74.5" cy="64.5" r="1.4" fill="#fff"/>`;
+  const blush=`<ellipse cx="38" cy="76" rx="6" ry="3.5" fill="#f58f7c" opacity=".75"/><ellipse cx="82" cy="76" rx="6" ry="3.5" fill="#f58f7c" opacity=".75"/>`;
+  const mouth=`<path d="M53 77 Q60 84 67 77" stroke="#1d2a2e" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+  let extra="";
+  if(type==="explorer") extra=`<ellipse cx="60" cy="37" rx="46" ry="8" fill="#b9864b"/><path d="M36 37 Q37 15 60 15 Q83 15 84 37 Z" fill="#d6a565"/><rect x="36" y="30" width="48" height="6" fill="#7a5530"/><path d="M98 96 l10 -24" stroke="#7a5530" stroke-width="4" stroke-linecap="round"/><path d="M104 70 l8 -6 l-1 10 z" fill="#e2543a"/>`;
+  if(type==="foodie") extra=`<circle cx="46" cy="24" r="12" fill="#fff"/><circle cx="60" cy="18" r="14" fill="#fff"/><circle cx="74" cy="24" r="12" fill="#fff"/><rect x="40" y="26" width="40" height="12" rx="3" fill="#fff" stroke="#e3e3e3"/><path d="M34 98 h52 a26 15 0 0 1 -52 0 z" fill="#e2543a"/><path d="M42 98 q4 -10 8 0 q4 -10 8 0 q4 -10 8 0 q4 -10 8 0" stroke="#f7d27a" stroke-width="3" fill="none"/><path d="M80 84 l18 -22 M86 88 l18 -22" stroke="#7a5530" stroke-width="3" stroke-linecap="round"/>`;
+  if(type==="healer") extra=`<circle cx="84" cy="36" r="7" fill="#ff7aa8"/><circle cx="92" cy="42" r="7" fill="#ff7aa8"/><circle cx="84" cy="48" r="7" fill="#ff7aa8"/><circle cx="76" cy="42" r="7" fill="#ff7aa8"/><circle cx="84" cy="42" r="4" fill="#ffd34d"/><rect x="35" y="58" width="22" height="14" rx="6" fill="#1d2a2e"/><rect x="63" y="58" width="22" height="14" rx="6" fill="#1d2a2e"/><path d="M57 64 h6" stroke="#1d2a2e" stroke-width="3"/><rect x="39" y="60" width="7" height="3" rx="1.5" fill="#fff" opacity=".6"/><rect x="67" y="60" width="7" height="3" rx="1.5" fill="#fff" opacity=".6"/>`;
+  if(type==="urban") extra=`<ellipse cx="54" cy="33" rx="36" ry="11" fill="#2f3a5c"/><circle cx="54" cy="21" r="4" fill="#2f3a5c"/><rect x="42" y="90" width="36" height="22" rx="5" fill="#33384a"/><circle cx="60" cy="101" r="7" fill="#9fb3c8" stroke="#1d2a2e" stroke-width="2"/><rect x="48" y="86" width="10" height="6" rx="2" fill="#33384a"/>`;
+  const eyesPart = type==="healer" ? "" : eyes;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="${TYPES[type].n} 캐릭터">${face}${eyesPart}${blush}${mouth}${extra}</svg>`;
+}
 
 const $=s=>document.querySelector(s);
 const show=id=>["s-start","s-cond","s-q","s-result"].forEach(s=>$("#"+s).hidden=s!==id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let cond={}, answers=[], qi=0;
 
-// 조건 칩 만들기 (기본값 미리 선택)
-const DEF={days:"short",budget:"mid",season:"spring",weather:"any",place:"both"};
 document.querySelectorAll(".chips").forEach(box=>{
   const name=box.dataset.name;
   box.innerHTML=COND[name].map(([v,l])=>`<input type="radio" id="${name}-${v}" name="${name}" value="${v}" ${DEF[name]===v?"checked":""}><label for="${name}-${v}">${l}</label>`).join("");
 });
-
-$("#go").onclick=()=>show("s-cond");
+$("#go").onclick=()=>{ history.replaceState(null,"",location.pathname); show("s-cond"); window.scrollTo(0,0); };
 $("#condForm").addEventListener("submit",e=>{
   e.preventDefault();
   const f=new FormData(e.target); Object.keys(COND).forEach(k=>cond[k]=f.get(k));
@@ -179,47 +361,81 @@ $("#condForm").addEventListener("submit",e=>{
 });
 function renderQ(){
   const q=QS[qi];
-  $("#qnum").textContent=String(qi+1).padStart(2,"0")+" / 15";
+  $("#qnum").textContent=String(qi+1).padStart(2,"0")+" / "+QS.length;
   $("#barFill").style.width=(qi/QS.length*100)+"%";
   $("#qText").textContent=q[0];
-  $("#qOpts").innerHTML=[q[1],q[2]].map((o,i)=>`<button class="opt" data-t="${o[1]}">${o[0]}</button>`).join("");
+  $("#qOpts").innerHTML=q[1].map((o,i)=>`<button class="opt" data-i="${i}">${o[0]}</button>`).join("");
   $("#qOpts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
-    answers[qi]=b.dataset.t; qi++;
-    if(qi<QS.length) renderQ(); else result();
+    answers[qi]=Number(b.dataset.i); qi++;
+    if(qi<QS.length) renderQ(); else result(false);
   });
   $("#back").hidden=qi===0;
 }
 $("#back").onclick=()=>{ if(qi>0){qi--; renderQ();} };
 
-function result(){
+const route=d=>`${d.from} → ${d.c}`;
+const comboName=R=>`${MOD[R.order[1]]} ${NOUN[R.type]}`;
+const condLabel=(k,v)=>(COND[k].find(x=>x[0]===v)||["",""])[1];
+
+function compute(){
   const sc={explorer:0,foodie:0,healer:0,urban:0};
-  answers.forEach(t=>sc[t]++);
-  const type=Object.keys(sc).sort((a,b)=>sc[b]-sc[a])[0];
+  const picked={explorer:[],foodie:[],healer:[],urban:[]};
+  answers.forEach((a,i)=>{ const o=QS[i][1][a]; sc[o[1]]++; picked[o[1]].push(o[0]); });
+  const order=TYPE_KEYS.slice().sort((x,y)=>sc[y]-sc[x]);
+  const type=order[0];
+  const [bmin,bmax]=BUDGET[cond.budget];
   const ranked=DESTS.map(d=>{
-    let s=0; Object.keys(sc).forEach(t=>s+=(d.t[t]||0)*sc[t]);
-    if(cond.place!=="both" && d.p!==cond.place && d.p!=="both") s-=12;
-    if(cond.weather!=="any" && d.w!=="any" && d.w!==cond.weather) s-=8;
-    if(d.b===cond.budget) s+=6; else if((cond.budget==="low"&&d.b==="high")) s-=12; else s-=3;
-    if(d.d.includes(cond.days)) s+=6; else s-=5;
+    let s=0; const why=[];
+    TYPE_KEYS.forEach(t=>s+=(d.t[t]||0)*sc[t]);
+    s+=(d.t[type]||0)*4;
+    if((d.t[type]||0)>=2) why.push(`${TYPES[type].n} 유형과 찰떡: ${d.fit}`);
+    else why.push(d.fit);
+    if(cond.place!=="both" && d.p!==cond.place && d.p!=="both") s-=12; else if(cond.place!=="both") why.push(`원하는 ${condLabel("place",cond.place)} 여행에 맞아요`);
+    if(cond.weather!=="any" && d.w!=="any" && d.w!==cond.weather) s-=8; else if(cond.weather!=="any") why.push(`원하는 날씨(${condLabel("weather",cond.weather)})와 맞아요`);
+    if(d.cost[0]>bmax) s-=12;
+    else if(d.cost[1]<bmin) s-=2;
+    else { s+=6; why.push(`예산 ${condLabel("budget",cond.budget)} 안에서 다녀올 수 있어요`); }
+    if(d.d.includes(cond.days)){ s+=6; why.push(`${condLabel("days",cond.days)} 일정에 알맞아요`); } else s-=5;
     if(d.bad.includes(cond.season)) s-=6;
-    if(d.good&&d.good.includes(cond.season)) s+=4;
-    return {d,s};
-  }).sort((a,b)=>b.s-a.s).slice(0,3).map(r=>r.d);
-  const T=TYPES[type];
-  $("#resCode").textContent="ICN → "+ranked[0].c;
+    if(d.good&&d.good.includes(cond.season)){ s+=4; why.push(`${condLabel("season",cond.season)}이 제철이에요`); }
+    return {d,s,why};
+  }).sort((a,b)=>b.s-a.s).slice(0,3);
+  return {sc,picked,order,type,ranked};
+}
+
+function encode(){ return "r="+answers.join("")+"-"+Object.keys(COND).map(k=>COND[k].findIndex(x=>x[0]===cond[k])).join(""); }
+function decode(h){
+  const m=/^#?r=([0-3]{20})-(\d{5})$/.exec(h||""); if(!m) return false;
+  const idx=m[2].split("").map(Number); const keys=Object.keys(COND);
+  if(keys.some((k,i)=>!COND[k][idx[i]])) return false;
+  answers=m[1].split("").map(Number); if(answers.some((a,i)=>!QS[i][1][a])) return false; keys.forEach((k,i)=>cond[k]=COND[k][idx[i]][0]); return true;
+}
+
+function result(shared){
+  const R=compute(); const T=TYPES[R.type];
+  const total=QS.length, win=R.sc[R.type];
+  const second=R.order[1];
+  const mix=TYPE_KEYS.map(t=>`<div class="mixrow ${t===R.type?"win":""}"><span>${TYPES[t].n}</span><span class="mixbar"><i style="width:${R.sc[t]/total*100}%"></i></span><b>${R.sc[t]}개</b></div>`).join("");
+  const picks=R.picked[R.type].slice(0,3).map(p=>`<li>"${esc(p)}"</li>`).join("");
+  const mate=(k,title,txt)=>`<div class="mate"><span class="label">${title}</span><div class="who">${charSVG(k)}<span>${TYPES[k].n}</span></div><p>${txt}</p></div>`;
+  $("#resCode").textContent=route(R.ranked[0].d);
   $("#resBody").innerHTML=`
-    <div class="type"><div class="badge" aria-hidden="true">${T.e}</div>
-      <div><p class="muted" style="font-size:13px">나의 여행 유형</p><h2>${T.n}</h2></div></div>
+    ${shared?`<p class="shared">친구가 보낸 결과예요. 나는 어떤 유형일까? 맨 아래에서 바로 해 볼 수 있어요.</p>`:""}
+    <div class="hero">${charSVG(R.type)}<div><p class="label">나의 여행 유형</p><h2>${comboName(R)}</h2><p class="muted" style="font-size:14px">주 유형 ${T.n} + 보조 유형 ${TYPES[second].n}</p></div></div>
+    <p class="combo">"${COMBO[R.type+"-"+second]}"</p>
     <p>${T.d}</p>
-    ${ranked.map((d,i)=>`
-      <div class="dest">
-        <div class="dest-top"><h3>${i+1}. ${d.n} <span class="muted" style="font-size:14px;font-weight:600">${d.k}</span></h3><span class="code">ICN → ${d.c}</span></div>
-        <p>${d.x}</p>
-        <p class="row"><b>주의할 점</b>${d.warn}</p>
-        <p class="row"><b>치안 정보</b><a href="https://www.0404.go.kr/" target="_blank" rel="noopener">외교부 해외안전여행에서 ${d.k} 여행경보 확인하기</a></p>
-      </div>`).join("")}
+    <div class="box">
+      <h3>왜 ${T.n}일까요?</h3>
+      <p style="font-size:15px">${total}문항 중 <b>${win}개</b>가 ${T.n} 쪽 답이었어요.${R.sc[second]>=win-1?` ${TYPES[second].n} 기질도 꽤 진하게 섞여 있어요.`:""}</p>
+      <div class="mix">${mix}</div>
+      ${picks?`<p class="label">결정적인 답변</p><ul class="picks">${picks}</ul>`:""}
+    </div>
+    <div class="school"><h3>🏫 학생이었다면?</h3><p>${T.school}</p></div>
+    <div class="mates">${mate(T.best[0],"찰떡 여행 메이트",T.best[1])}${mate(T.worst[0],"같이 가면 싸울 수도",T.worst[1])}</div>
+    ${R.ranked.map((r,i)=>destHTML(r,i)).join("")}
     <div class="actions">
-      <button class="btn" id="copyLink">결과 링크 복사</button>
+      ${shared?`<button class="btn" id="tryMe">나도 테스트 해 보기</button>`:`
+      <button class="btn" id="copyLink">내 결과 링크 복사</button>
       <button class="btn ghost" id="makeImg">결과 이미지 만들기 (인스타 스토리 크기)</button>
       <div class="imgbox" id="imgBox" hidden>
         <img id="imgOut" alt="내 여행 취향 결과 이미지">
@@ -227,29 +443,55 @@ function result(){
         <p class="note" style="text-align:center">저장 버튼이 안 되면 이미지를 길게 누르거나 우클릭해서 저장하세요.</p>
       </div>
       <button class="btn ghost" id="invite">친구에게 테스트 보내기 (문구 복사)</button>
-      <button class="btn ghost" id="again">다시 하기</button>
+      <button class="btn ghost" id="again">다시 하기</button>`}
       <p class="toast" id="toast" role="status"></p>
-      <p class="note">치안 정보는 출발 전 외교부 공식 여행경보를 꼭 확인하세요.</p>
+      <p class="note">치안 정보는 출발 전 외교부 공식 여행경보를 꼭 확인하세요. 경비는 대략적인 범위이고 시기와 숙소에 따라 달라져요. 사진은 위키미디어 공용의 자유 이용 사진이에요.</p>
     </div>`;
   $("#barFill").style.width="100%";
+  const base=location.origin+location.pathname;
   const copy=(txt,msg)=>{
     const done=()=>$("#toast").textContent=msg;
     try{navigator.clipboard.writeText(txt).then(done).catch(()=>{$("#toast").textContent=txt});}catch(e){$("#toast").textContent=txt}
   };
-  const url=location.href.split("#")[0];
-  $("#copyLink").onclick=()=>copy(`나는 ${T.n}! 추천 여행지는 ${ranked.map(d=>d.n).join(", ")}. ${url}`,"결과 링크를 복사했어요.");
-  $("#invite").onclick=()=>copy(`나랑 여행 취향 맞는지 테스트해 볼래? 3분이면 끝나 ✈️ ${url}`,"초대 문구를 복사했어요.");
-  $("#again").onclick=()=>{answers=[];qi=0;show("s-start");};
-  $("#makeImg").onclick=async()=>{
-    try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
-    const url=makeImage(T,ranked);
-    $("#imgOut").src=url; $("#dl").href=url; $("#imgBox").hidden=false;
-  };
+  if(shared){
+    $("#tryMe").onclick=()=>{ history.replaceState(null,"",location.pathname); answers=[]; qi=0; show("s-start"); window.scrollTo(0,0); };
+  } else {
+    history.replaceState(null,"","#"+encode());
+    $("#copyLink").onclick=()=>copy(`나는 ${T.n}! 추천 여행지는 ${R.ranked.map(r=>r.d.n).join(", ")}. 내 결과 보기 → ${base}#${encode()}`,"결과 링크를 복사했어요. 친구가 열면 내 결과가 바로 보여요.");
+    $("#invite").onclick=()=>copy(`나랑 여행 취향 맞는지 테스트해 볼래? 3분이면 끝나 ✈️ ${base}`,"초대 문구를 복사했어요.");
+    $("#again").onclick=()=>{ history.replaceState(null,"",location.pathname); answers=[]; qi=0; show("s-start"); window.scrollTo(0,0); };
+    $("#makeImg").onclick=async()=>{
+      $("#toast").textContent="이미지를 만들고 있어요…";
+      try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
+      const url=await makeImage(R);
+      $("#imgOut").src=url; $("#dl").href=url; $("#imgBox").hidden=false; $("#toast").textContent="";
+    };
+  }
   show("s-result"); window.scrollTo(0,0);
 }
 
+function destHTML(r,i){
+  const d=r.d;
+  const gal=d.photos.map(p=>`<figure><img src="${p[0]}" alt="${esc(p[1])}" loading="lazy" referrerpolicy="no-referrer"><figcaption>${esc(p[1])}</figcaption></figure>`).join("");
+  const credit=d.photos.map(p=>`<a href="${p[4]}" target="_blank" rel="noopener">${esc(p[1])}</a> ${esc(p[2])}, ${esc(p[3])}`).join(" · ");
+  return `<div class="dest">
+    <div class="dest-top"><h3>${i+1}. ${d.n} <span class="muted" style="font-size:14px;font-weight:600">${d.k}</span></h3><span class="code">${route(d)}</span></div>
+    <div class="gallery">${gal}</div>
+    <p class="credit">사진: ${credit}</p>
+    <div class="facts"><span class="fact">🗓️ 베스트 시즌 ${d.season}</span><span class="fact">⏱️ 추천 기간 ${d.stay}</span><span class="fact">💰 1인 경비 약 ${d.cost[0]}~${d.cost[1]}만원</span></div>
+    <div class="sec"><h4>💡 추천한 이유</h4><ul>${r.why.map(w=>`<li>${esc(w)}</li>`).join("")}</ul></div>
+    <div class="sec"><h4>📍 꼭 가볼 곳</h4><ul>${d.spots.map(s=>`<li><b>${esc(s[0])}</b> · ${esc(s[1])}</li>`).join("")}</ul></div>
+    <div class="sec"><h4>🍜 유명한 맛집</h4><ul>${d.foods.map(f=>`<li>${esc(f)}</li>`).join("")}</ul><p class="warnline">방문 전 가게 운영시간과 휴무일을 꼭 확인하세요.</p></div>
+    <div class="sec"><h4>⚠️ 주의할 점</h4><p style="font-size:15px">${esc(d.warn)}</p></div>
+    <div class="sec"><h4>🧳 준비물 체크리스트</h4><div class="checks">${d.check.map((c,j)=>`<label><input type="checkbox" id="chk-${d.c}-${j}"> ${esc(c)}</label>`).join("")}</div></div>
+    <div class="sec"><h4>🔎 항공권·숙소 찾아보기</h4><div class="links">${d.ktx?`<a href="https://www.letskorail.com/" target="_blank" rel="noopener">🚄 KTX 예매 (코레일)</a>`:`<a href="https://www.skyscanner.co.kr/transport/flights/${d.dom?d.air:"icn/"+d.air}/" target="_blank" rel="noopener">✈️ 항공권 검색 (스카이스캐너)</a>`}<a href="https://www.booking.com/searchresults.ko.html?ss=${encodeURIComponent(d.en)}" target="_blank" rel="noopener">🏨 숙소 검색 (부킹닷컴)</a></div></div>
+    ${d.dom?`<div class="sec"><h4>🌦️ 날씨 정보</h4><p style="font-size:15px"><a href="https://www.weather.go.kr/" target="_blank" rel="noopener">기상청 날씨누리에서 ${esc(d.n)} 날씨 확인하기</a></p></div>`:`<div class="sec"><h4>🛡️ 치안 정보</h4><p style="font-size:15px"><a href="https://www.0404.go.kr/" target="_blank" rel="noopener">외교부 해외안전여행에서 ${esc(d.k)} 여행경보 확인하기</a></p></div>`}
+  </div>`;
+}
+
 // 인스타 스토리(1080x1920) 결과 이미지
-function makeImage(T,ranked){
+async function makeImage(R){
+  const T=TYPES[R.type], ranked=R.ranked.map(r=>r.d);
   const c=document.createElement("canvas"); c.width=1080; c.height=1920;
   const g=c.getContext("2d");
   const ink="#14353d", paper="#fbfdfc", accent="#e2543a", stamp="#f2b33d", muted="#5b7177", line="#c9d6d9";
@@ -258,16 +500,18 @@ function makeImage(T,ranked){
   const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();};
   rr(80,140,920,1640,40); g.fillStyle=paper; g.fill();
   g.fillStyle=muted; g.font=`600 30px ${mono}`; g.textAlign="left"; g.fillText("BOARDING PASS",140,230);
-  g.textAlign="right"; g.fillText("나의 여행 취향",940,230);
+  g.textAlign="right"; g.fillText(route(ranked[0]),940,230);
   g.strokeStyle=line; g.lineWidth=4; g.setLineDash([16,14]); g.beginPath(); g.moveTo(80,280); g.lineTo(1000,280); g.stroke(); g.setLineDash([]);
-  g.textAlign="center"; g.font=`160px sans-serif`; g.fillText(T.e,540,500);
-  g.fillStyle=muted; g.font=`600 34px ${body}`; g.fillText("나의 여행 유형은",540,590);
-  g.fillStyle=ink; g.font=`96px ${disp}`; g.fillText(T.n,540,700);
-  g.font=`400 34px ${body}`; g.fillStyle=ink;
-  const words=T.d.split(" "); let ln="", y=790;
-  words.forEach(w=>{ const t=ln?ln+" "+w:w; if(g.measureText(t).width>760){ g.fillText(ln,540,y); y+=52; ln=w; } else ln=t; });
-  if(ln) g.fillText(ln,540,y);
-  let top=y+90;
+  try{
+    const img=new Image(); img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(charSVG(R.type));
+    await new Promise((ok,no)=>{img.onload=ok; img.onerror=no;});
+    g.drawImage(img,400,310,280,280);
+  }catch(e){}
+  g.textAlign="center";
+  g.fillStyle=muted; g.font=`600 34px ${body}`; g.fillText("나의 여행 유형은",540,640);
+  g.fillStyle=ink; g.font=`100px ${disp}`; g.fillText(comboName(R),540,750);
+  g.fillStyle=muted; g.font=`600 32px ${body}`; g.fillText(`${T.n} + ${TYPES[R.order[1]].n} · 찰떡 메이트 ${TYPES[T.best[0]].n}`,540,815);
+  let top=900;
   g.fillStyle=muted; g.font=`600 30px ${mono}`; g.fillText("RECOMMENDED ROUTES",540,top); top+=50;
   ranked.forEach((d,i)=>{
     const yy=top+i*170;
@@ -275,15 +519,18 @@ function makeImage(T,ranked){
     g.textAlign="left"; g.fillStyle=ink; g.font=`800 48px ${body}`; g.fillText(`${i+1}. ${d.n}`,180,yy+66);
     g.fillStyle=muted; g.font=`600 30px ${body}`; g.fillText(d.k,180,yy+112);
     g.textAlign="right"; rr(700,yy+44,210,56,10); g.fillStyle=stamp; g.fill();
-    g.fillStyle="#2b1d00"; g.font=`600 32px ${mono}`; g.fillText(`ICN→${d.c}`,890,yy+84);
+    g.fillStyle="#2b1d00"; g.font=`600 32px ${mono}`; g.fillText(`${d.from==="서울"?"SEL":d.from}→${d.c}`,890,yy+84);
     g.textAlign="center";
   });
-  g.fillStyle=accent; rr(240,1620,600,96,48); g.fill();
-  g.fillStyle="#fff"; g.font=`800 38px ${body}`; g.fillText("너의 여행 취향도 알려줘!",540,1681);
+  g.fillStyle=accent; rr(220,1530,640,100,50); g.fill();
+  g.fillStyle="#fff"; g.font=`800 38px ${body}`; g.fillText("너의 여행 취향도 알려줘!",540,1593);
+  g.fillStyle=muted; g.font=`600 28px ${body}`; g.fillText(location.host+location.pathname,540,1700);
   g.fillStyle=paper; g.font=`600 30px ${mono}`; g.fillText("여행 취향 테스트",540,1850);
   return c.toDataURL("image/png");
 }
-</script>
 
+// 결과 링크로 들어온 경우 친구 결과를 바로 보여줌
+if(decode(location.hash)) result(true);
+</script>
 </body>
 </html>
