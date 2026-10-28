@@ -19,9 +19,6 @@
   --body:"Gothic A1",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349;
-  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; --warn:#ff6b5e; --sky1:#13303a; --sky2:#0e1d21; --cloud:rgba(255,255,255,.05); color-scheme:dark}}
 :root[data-theme="dark"]{--bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349; --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; --warn:#ff6b5e; --sky1:#13303a; --sky2:#0e1d21; --cloud:rgba(255,255,255,.05); color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;
@@ -419,7 +416,7 @@ document.querySelectorAll(".chips").forEach(box=>{
   box.innerHTML=COND[name].map(([v,l])=>`<input type="radio" id="${name}-${v}" name="${name}" value="${v}" ${DEF[name]===v?"checked":""}><label for="${name}-${v}">${l}</label>`).join("");
 });
 try{const t=localStorage.getItem("tt_theme"); if(t) document.documentElement.dataset.theme=t;}catch(e){}
-const syncTheme=()=>{const dark=document.documentElement.dataset.theme? document.documentElement.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; $("#themeBtn").textContent=dark?"🌙":"☀️";};
+const syncTheme=()=>{const dark=document.documentElement.dataset.theme==="dark"; $("#themeBtn").textContent=dark?"🌙":"☀️";};
 syncTheme();
 $("#themeBtn").onclick=()=>{const dark=$("#themeBtn").textContent==="🌙"; const next=dark?"light":"dark"; document.documentElement.dataset.theme=next; try{localStorage.setItem("tt_theme",next)}catch(e){} syncTheme();};
 $("#go").onclick=()=>{ history.replaceState(null,"",location.pathname); show("s-cond"); window.scrollTo(0,0); };
