@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="조건 5개와 질문 15개로 나의 여행 유형과 추천 여행지 3곳을 알아보세요.">
+<meta property="og:title" content="나한테 맞는 여행지는 어디일까? 여행 취향 테스트">
+<meta property="og:description" content="3분이면 끝나는 여행 취향 테스트. 내 여행 유형과 추천 여행지 3곳을 알려드려요.">
+<meta property="og:type" content="website">
+</head>
+<body>
+<title>여행 취향 테스트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gothic+A1:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* 레이아웃: 탑승권(보딩패스) 한 장이 화면 단계마다 바뀌는 단일 카드 */
+:root{
+  --bg:#e7eef0; --paper:#fbfdfc; --ink:#14353d; --muted:#5b7177; --line:#c9d6d9;
+  --accent:#e2543a; --stamp:#f2b33d; --soft:#dfecee;
+  --display:"Do Hyeon","Gothic A1",system-ui,sans-serif;
+  --body:"Gothic A1",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349;
+  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349;
+  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px}
+.wrap{max-width:560px;margin:0 auto;display:grid;gap:16px}
+.pass{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.pass-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;
+  border-bottom:2px dashed var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--muted)}
+.pass-body{padding:24px 20px;display:grid;gap:18px}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.2;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,9vw,48px)} h2{font-size:26px}
+p{margin:0}.muted{color:var(--muted)}
+.route{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-weight:600;font-size:28px}
+.route span.small{font-size:12px;color:var(--muted);display:block;font-weight:500}
+.route .dash{flex:1;border-top:2px dotted var(--line);position:relative;min-width:30px}
+.btn{font:inherit;font-weight:800;border:0;border-radius:10px;padding:14px 18px;cursor:pointer;background:var(--accent);color:#fff;width:100%;display:block;text-align:center;text-decoration:none;box-sizing:border-box}
+#imgOut{width:100%;max-width:320px;margin:0 auto;display:block;border-radius:12px;border:1px solid var(--line)}
+.imgbox{display:grid;gap:10px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--stamp);outline-offset:2px}
+.field{display:grid;gap:8px}
+.field label.t{font-weight:800;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips input{position:absolute;opacity:0;pointer-events:none}
+.chips label{border:1px solid var(--line);border-radius:999px;padding:7px 14px;cursor:pointer;font-size:14px}
+.chips input:checked+label{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips input:focus-visible+label{outline:3px solid var(--stamp)}
+.bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.qmeta{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;text-align:left;background:var(--soft);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:14px 16px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.type{display:flex;gap:16px;align-items:center}
+.badge{font-size:44px;width:76px;height:76px;flex:none;display:grid;place-items:center;background:var(--soft);border-radius:50%;border:2px solid var(--stamp)}
+.dest{border-top:1px solid var(--line);padding-top:16px;display:grid;gap:8px}
+.dest-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.code{font-family:var(--mono);font-weight:600;font-size:13px;background:var(--stamp);color:#2b1d00;padding:2px 8px;border-radius:4px}
+.dest h3{margin:0;font-size:20px;font-weight:800}
+.row{font-size:14px}.row b{display:inline-block;min-width:64px;color:var(--muted);font-weight:600}
+.row a{color:var(--accent)}
+.actions{display:grid;gap:8px}
+.toast{font-size:13px;color:var(--muted);min-height:1.4em;text-align:center}
+.note{font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+  <section class="pass" id="s-start">
+    <div class="pass-head"><span>BOARDING PASS</span><span>ICN → ???</span></div>
+    <div class="pass-body">
+      <div class="route"><div>ICN<span class="small">인천</span></div><div class="dash"></div><div>???<span class="small">당신의 여행지</span></div></div>
+      <h1>나한테 맞는 여행지는 어디일까?</h1>
+      <p class="muted">조건 5개, 질문 15개에 답하면 여행 유형과 추천 여행지 3곳을 알려드려요. 3분이면 끝나요.</p>
+      <button class="btn" id="go">테스트 시작</button>
+    </div>
+  </section>
+
+  <section class="pass" id="s-cond" hidden>
+    <div class="pass-head"><span>STEP 1 · 여행 조건</span><span>5 / 5</span></div>
+    <form class="pass-body" id="condForm">
+      <div class="field"><label class="t">여행 기간</label><div class="chips" data-name="days"></div></div>
+      <div class="field"><label class="t">예산 (1인, 항공 포함)</label><div class="chips" data-name="budget"></div></div>
+      <div class="field"><label class="t">출발 시기</label><div class="chips" data-name="season"></div></div>
+      <div class="field"><label class="t">원하는 날씨</label><div class="chips" data-name="weather"></div></div>
+      <div class="field"><label class="t">어떤 곳이 좋아요?</label><div class="chips" data-name="place"></div></div>
+      <button class="btn" type="submit">질문 시작하기</button>
+    </form>
+  </section>
+
+  <section class="pass" id="s-q" hidden>
+    <div class="pass-head"><span>STEP 2 · 취향 질문</span><span id="qnum">01 / 15</span></div>
+    <div class="pass-body">
+      <div class="bar"><i id="barFill" style="width:0%"></i></div>
+      <h2 id="qText"></h2>
+      <div class="opts" id="qOpts"></div>
+      <button class="btn ghost" id="back">이전 질문</button>
+    </div>
+  </section>
+
+  <section class="pass" id="s-result" hidden>
+    <div class="pass-head"><span>RESULT · 탑승권 발급 완료</span><span id="resCode"></span></div>
+    <div class="pass-body" id="resBody"></div>
+  </section>
+</div>
+
+<script>
+const COND = {
+  days:[["short","2~3일"],["mid","4~5일"],["long","1주 이상"]],
+  budget:[["low","100만원 이하"],["mid","100~200만원"],["high","200만원 이상"]],
+  season:[["spring","봄"],["summer","여름"],["fall","가을"],["winter","겨울"]],
+  weather:[["warm","따뜻한 곳"],["cool","선선한 곳"],["any","상관없음"]],
+  place:[["city","도시"],["resort","휴양지"],["both","둘 다"]]
+};
+const TYPES = {
+  explorer:{e:"🧗",n:"모험 개척자",d:"계획표보다 지도 밖이 궁금한 사람. 하이킹, 다이빙처럼 몸으로 부딪히는 경험이 여행의 핵심이에요."},
+  foodie:{e:"🍜",n:"먹방 순례자",d:"여행 동선이 맛집 지도로 그려지는 사람. 시장 골목과 현지 식당에서 그 도시를 기억해요."},
+  healer:{e:"🌴",n:"느긋한 힐러",d:"아무것도 안 하는 것도 일정인 사람. 바다, 수영장, 좋은 숙소에서 충전하는 여행이 잘 맞아요."},
+  urban:{e:"🏙️",n:"도시 산책가",d:"골목, 미술관, 편집숍을 걸으며 도시의 분위기를 모으는 사람. 하루 2만 보도 즐거워요."}
+};
+// q: 질문, a/b: [보기, 점수 받는 유형]
+const QS = [
+  ["여행 첫날 아침, 눈 뜨자마자 하고 싶은 건?",["현지인 줄 서는 아침 맛집 찾아가기","foodie"],["숙소 조식 먹고 수영장 가기","healer"]],
+  ["일정표는 어떻게 짜요?",["시간 단위로 꼼꼼하게","urban"],["큰 틀만 정하고 그때그때","explorer"]],
+  ["숙소를 고를 때 가장 중요한 건?",["뷰와 수영장, 침구","healer"],["위치! 어디든 걸어갈 수 있게","urban"]],
+  ["여행 사진첩을 열면 가장 많은 사진은?",["음식 사진","foodie"],["풍경과 자연 사진","explorer"]],
+  ["비 오는 날이 되면?",["미술관, 쇼핑몰, 카페 투어","urban"],["숙소에서 낮잠과 마사지","healer"]],
+  ["하루에 얼마나 걷는 게 좋아요?",["2만 보도 괜찮아요","urban"],["최소한만 걷고 싶어요","healer"]],
+  ["액티비티 하나만 고른다면?",["스쿠버다이빙이나 트레킹","explorer"],["현지 쿠킹 클래스","foodie"]],
+  ["기념품으로 사 오는 건?",["현지 간식과 식재료","foodie"],["디자인 소품이나 편집숍 아이템","urban"]],
+  ["처음 보는 길이 나오면?",["일단 들어가 본다","explorer"],["지도 앱으로 확인부터","urban"]],
+  ["여행의 마무리는?",["노을 보며 해변에서 멍때리기","healer"],["야시장에서 마지막 한 입","foodie"]],
+  ["여행 영상을 찍는다면 장르는?",["브이로그 먹방","foodie"],["드론으로 찍은 대자연","explorer"]],
+  ["돈을 아끼지 않는 항목은?",["좋은 숙소","healer"],["체험과 투어","explorer"]],
+  ["저녁 8시, 뭐 하고 있을까요?",["루프탑 바에서 야경 보기","urban"],["숙소에서 컵라면과 넷플릭스","healer"]],
+  ["낯선 음식 앞에서 나는?",["무조건 도전","foodie"],["아는 맛이 좋아요","healer"]],
+  ["여행 다녀와서 가장 자랑하고 싶은 건?",["남들 안 가본 곳에 다녀온 것","explorer"],["그 도시의 핫플을 다 가본 것","urban"]]
+];
+// 여행지: 공항코드, 이름, 국가, 유형 가중치, 도시/휴양, 날씨, 예산, 기간, 설명, 주의사항, 외교부 국가 검색어
+const DESTS = [
+  {c:"DAD",n:"다낭",k:"베트남",t:{healer:3,foodie:2},p:"both",w:"warm",b:"low",d:["short","mid"],x:"바다와 리조트, 저렴한 물가, 근교 호이안 야경까지 한 번에.",warn:"9~12월은 우기라 비가 잦아요. 택시는 그랩 같은 앱 호출이 안전해요.",bad:["fall"]},
+  {c:"BKK",n:"방콕",k:"태국",t:{foodie:3,urban:2},p:"city",w:"warm",b:"low",d:["short","mid"],x:"길거리 음식부터 루프탑 바까지, 밤이 더 재미있는 도시.",warn:"툭툭과 택시 바가지 요금에 주의. 왕궁·사원은 어깨와 무릎을 가리는 복장이 필요해요.",bad:[]},
+  {c:"KIX",n:"오사카",k:"일본",t:{foodie:3,urban:1},p:"city",w:"any",b:"low",d:["short"],x:"가깝고 싸고 맛있는 미식 도시. 교토·나라 당일치기도 쉬워요.",warn:"주말과 연휴엔 인기 식당 대기가 길어요. 현금만 받는 가게가 아직 있어요.",bad:[]},
+  {c:"TYO",n:"도쿄",k:"일본",t:{urban:3,foodie:1},p:"city",w:"any",b:"mid",d:["short","mid"],x:"동네마다 분위기가 다른 거대한 산책 코스. 쇼핑과 전시가 끝이 없어요.",warn:"교통비가 쌓이면 꽤 비싸요. 지하철 노선이 복잡하니 환승 앱을 준비하세요.",bad:[]},
+  {c:"TPE",n:"타이베이",k:"대만",t:{foodie:3,urban:1},p:"city",w:"warm",b:"low",d:["short"],x:"야시장과 우육면, 근교 지우펀까지. 짧은 일정에 딱 맞아요.",warn:"여름~초가을엔 태풍 소식을 꼭 확인하세요. 오토바이가 많아 횡단보도에서도 주의.",bad:["summer"]},
+  {c:"CEB",n:"세부",k:"필리핀",t:{explorer:3,healer:2},p:"resort",w:"warm",b:"mid",d:["short","mid"],x:"호핑 투어와 다이빙, 고래상어 체험까지 바다 액티비티 천국.",warn:"해양 액티비티는 안전장비와 업체 후기를 확인하세요. 귀중품은 숙소 금고에.",bad:[]},
+  {c:"DPS",n:"발리",k:"인도네시아",t:{healer:3,explorer:2},p:"resort",w:"warm",b:"mid",d:["mid","long"],x:"논뷰 풀빌라, 서핑, 사원. 쉬는 것도 노는 것도 다 되는 섬.",warn:"원숭이 숲에선 안경·모자 같은 소지품을 조심. 수돗물은 마시지 마세요.",bad:[]},
+  {c:"CTS",n:"삿포로",k:"일본",t:{foodie:2,healer:2},p:"both",w:"cool",b:"mid",d:["short","mid"],x:"겨울엔 설경과 온천, 여름엔 라벤더 밭. 해산물과 수프카레도 별미.",warn:"겨울엔 빙판길이 미끄러워요. 미끄럼 방지 신발이나 아이젠을 챙기세요.",bad:[],good:["winter","summer"]},
+  {c:"SIN",n:"싱가포르",k:"싱가포르",t:{urban:3,foodie:2},p:"city",w:"warm",b:"high",d:["short","mid"],x:"깨끗하고 안전한 도시에 호커센터 맛집과 야경 명소가 가득.",warn:"흡연·쓰레기 투기 등 벌금 규정이 엄격해요. 물가가 높은 편이에요.",bad:[]},
+  {c:"PAR",n:"파리",k:"프랑스",t:{urban:3,foodie:2},p:"city",w:"cool",b:"high",d:["long"],x:"미술관, 카페, 산책. 걷기만 해도 영화 같은 도시.",warn:"관광지와 지하철 소매치기가 많아요. 가방은 앞으로 메세요.",bad:[]},
+  {c:"ZRH",n:"인터라켄",k:"스위스",t:{explorer:3,healer:1},p:"resort",w:"cool",b:"high",d:["long"],x:"알프스 하이킹, 패러글라이딩, 호수 풍경. 대자연 그 자체.",warn:"산 위 날씨가 급변해요. 방풍 겉옷을 챙기고 물가가 매우 높아요.",bad:["winter"]},
+  {c:"HNL",n:"호놀룰루",k:"미국",t:{healer:3,explorer:1},p:"resort",w:"warm",b:"high",d:["mid","long"],x:"와이키키 해변과 다이아몬드헤드 트레킹. 휴양과 쇼핑을 한 번에.",warn:"자외선이 강해요. 산호 보호용 선크림을 쓰세요. 미국 입국용 ESTA가 필요해요.",bad:[]},
+  {c:"BCN",n:"바르셀로나",k:"스페인",t:{urban:3,foodie:2},p:"both",w:"warm",b:"high",d:["long"],x:"가우디 건축과 해변, 타파스 바. 도시와 바다를 다 즐겨요.",warn:"유럽에서 소매치기가 많기로 유명해요. 람블라스 거리에서 특히 조심하세요.",bad:[]}
+];
+
+const $=s=>document.querySelector(s);
+const show=id=>["s-start","s-cond","s-q","s-result"].forEach(s=>$("#"+s).hidden=s!==id);
+let cond={}, answers=[], qi=0;
+
+// 조건 칩 만들기 (기본값 미리 선택)
+const DEF={days:"short",budget:"mid",season:"spring",weather:"any",place:"both"};
+document.querySelectorAll(".chips").forEach(box=>{
+  const name=box.dataset.name;
+  box.innerHTML=COND[name].map(([v,l])=>`<input type="radio" id="${name}-${v}" name="${name}" value="${v}" ${DEF[name]===v?"checked":""}><label for="${name}-${v}">${l}</label>`).join("");
+});
+
+$("#go").onclick=()=>show("s-cond");
+$("#condForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const f=new FormData(e.target); Object.keys(COND).forEach(k=>cond[k]=f.get(k));
+  answers=[]; qi=0; renderQ(); show("s-q");
+});
+function renderQ(){
+  const q=QS[qi];
+  $("#qnum").textContent=String(qi+1).padStart(2,"0")+" / 15";
+  $("#barFill").style.width=(qi/QS.length*100)+"%";
+  $("#qText").textContent=q[0];
+  $("#qOpts").innerHTML=[q[1],q[2]].map((o,i)=>`<button class="opt" data-t="${o[1]}">${o[0]}</button>`).join("");
+  $("#qOpts").querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    answers[qi]=b.dataset.t; qi++;
+    if(qi<QS.length) renderQ(); else result();
+  });
+  $("#back").hidden=qi===0;
+}
+$("#back").onclick=()=>{ if(qi>0){qi--; renderQ();} };
+
+function result(){
+  const sc={explorer:0,foodie:0,healer:0,urban:0};
+  answers.forEach(t=>sc[t]++);
+  const type=Object.keys(sc).sort((a,b)=>sc[b]-sc[a])[0];
+  const ranked=DESTS.map(d=>{
+    let s=0; Object.keys(sc).forEach(t=>s+=(d.t[t]||0)*sc[t]);
+    if(cond.place!=="both" && d.p!==cond.place && d.p!=="both") s-=12;
+    if(cond.weather!=="any" && d.w!=="any" && d.w!==cond.weather) s-=8;
+    if(d.b===cond.budget) s+=6; else if((cond.budget==="low"&&d.b==="high")) s-=12; else s-=3;
+    if(d.d.includes(cond.days)) s+=6; else s-=5;
+    if(d.bad.includes(cond.season)) s-=6;
+    if(d.good&&d.good.includes(cond.season)) s+=4;
+    return {d,s};
+  }).sort((a,b)=>b.s-a.s).slice(0,3).map(r=>r.d);
+  const T=TYPES[type];
+  $("#resCode").textContent="ICN → "+ranked[0].c;
+  $("#resBody").innerHTML=`
+    <div class="type"><div class="badge" aria-hidden="true">${T.e}</div>
+      <div><p class="muted" style="font-size:13px">나의 여행 유형</p><h2>${T.n}</h2></div></div>
+    <p>${T.d}</p>
+    ${ranked.map((d,i)=>`
+      <div class="dest">
+        <div class="dest-top"><h3>${i+1}. ${d.n} <span class="muted" style="font-size:14px;font-weight:600">${d.k}</span></h3><span class="code">ICN → ${d.c}</span></div>
+        <p>${d.x}</p>
+        <p class="row"><b>주의할 점</b>${d.warn}</p>
+        <p class="row"><b>치안 정보</b><a href="https://www.0404.go.kr/" target="_blank" rel="noopener">외교부 해외안전여행에서 ${d.k} 여행경보 확인하기</a></p>
+      </div>`).join("")}
+    <div class="actions">
+      <button class="btn" id="copyLink">결과 링크 복사</button>
+      <button class="btn ghost" id="makeImg">결과 이미지 만들기 (인스타 스토리 크기)</button>
+      <div class="imgbox" id="imgBox" hidden>
+        <img id="imgOut" alt="내 여행 취향 결과 이미지">
+        <a class="btn ghost" id="dl" download="여행취향결과.png">이미지 저장</a>
+        <p class="note" style="text-align:center">저장 버튼이 안 되면 이미지를 길게 누르거나 우클릭해서 저장하세요.</p>
+      </div>
+      <button class="btn ghost" id="invite">친구에게 테스트 보내기 (문구 복사)</button>
+      <button class="btn ghost" id="again">다시 하기</button>
+      <p class="toast" id="toast" role="status"></p>
+      <p class="note">치안 정보는 출발 전 외교부 공식 여행경보를 꼭 확인하세요.</p>
+    </div>`;
+  $("#barFill").style.width="100%";
+  const copy=(txt,msg)=>{
+    const done=()=>$("#toast").textContent=msg;
+    try{navigator.clipboard.writeText(txt).then(done).catch(()=>{$("#toast").textContent=txt});}catch(e){$("#toast").textContent=txt}
+  };
+  const url=location.href.split("#")[0];
+  $("#copyLink").onclick=()=>copy(`나는 ${T.n}! 추천 여행지는 ${ranked.map(d=>d.n).join(", ")}. ${url}`,"결과 링크를 복사했어요.");
+  $("#invite").onclick=()=>copy(`나랑 여행 취향 맞는지 테스트해 볼래? 3분이면 끝나 ✈️ ${url}`,"초대 문구를 복사했어요.");
+  $("#again").onclick=()=>{answers=[];qi=0;show("s-start");};
+  $("#makeImg").onclick=async()=>{
+    try{ if(document.fonts&&document.fonts.ready) await document.fonts.ready; }catch(e){}
+    const url=makeImage(T,ranked);
+    $("#imgOut").src=url; $("#dl").href=url; $("#imgBox").hidden=false;
+  };
+  show("s-result"); window.scrollTo(0,0);
+}
+
+// 인스타 스토리(1080x1920) 결과 이미지
+function makeImage(T,ranked){
+  const c=document.createElement("canvas"); c.width=1080; c.height=1920;
+  const g=c.getContext("2d");
+  const ink="#14353d", paper="#fbfdfc", accent="#e2543a", stamp="#f2b33d", muted="#5b7177", line="#c9d6d9";
+  const disp='"Do Hyeon","Gothic A1",sans-serif', body='"Gothic A1",sans-serif', mono='"IBM Plex Mono",monospace';
+  g.fillStyle=ink; g.fillRect(0,0,1080,1920);
+  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();};
+  rr(80,140,920,1640,40); g.fillStyle=paper; g.fill();
+  g.fillStyle=muted; g.font=`600 30px ${mono}`; g.textAlign="left"; g.fillText("BOARDING PASS",140,230);
+  g.textAlign="right"; g.fillText("나의 여행 취향",940,230);
+  g.strokeStyle=line; g.lineWidth=4; g.setLineDash([16,14]); g.beginPath(); g.moveTo(80,280); g.lineTo(1000,280); g.stroke(); g.setLineDash([]);
+  g.textAlign="center"; g.font=`160px sans-serif`; g.fillText(T.e,540,500);
+  g.fillStyle=muted; g.font=`600 34px ${body}`; g.fillText("나의 여행 유형은",540,590);
+  g.fillStyle=ink; g.font=`96px ${disp}`; g.fillText(T.n,540,700);
+  g.font=`400 34px ${body}`; g.fillStyle=ink;
+  const words=T.d.split(" "); let ln="", y=790;
+  words.forEach(w=>{ const t=ln?ln+" "+w:w; if(g.measureText(t).width>760){ g.fillText(ln,540,y); y+=52; ln=w; } else ln=t; });
+  if(ln) g.fillText(ln,540,y);
+  let top=y+90;
+  g.fillStyle=muted; g.font=`600 30px ${mono}`; g.fillText("RECOMMENDED ROUTES",540,top); top+=50;
+  ranked.forEach((d,i)=>{
+    const yy=top+i*170;
+    rr(140,yy,800,140,24); g.fillStyle="#dfecee"; g.fill();
+    g.textAlign="left"; g.fillStyle=ink; g.font=`800 48px ${body}`; g.fillText(`${i+1}. ${d.n}`,180,yy+66);
+    g.fillStyle=muted; g.font=`600 30px ${body}`; g.fillText(d.k,180,yy+112);
+    g.textAlign="right"; rr(700,yy+44,210,56,10); g.fillStyle=stamp; g.fill();
+    g.fillStyle="#2b1d00"; g.font=`600 32px ${mono}`; g.fillText(`ICN→${d.c}`,890,yy+84);
+    g.textAlign="center";
+  });
+  g.fillStyle=accent; rr(240,1620,600,96,48); g.fill();
+  g.fillStyle="#fff"; g.font=`800 38px ${body}`; g.fillText("너의 여행 취향도 알려줘!",540,1681);
+  g.fillStyle=paper; g.font=`600 30px ${mono}`; g.fillText("여행 취향 테스트",540,1850);
+  return c.toDataURL("image/png");
+}
+</script>
+
+</body>
+</html>
