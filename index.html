@@ -14,17 +14,17 @@
 :root{
   --bg:#e7eef0; --paper:#fbfdfc; --ink:#14353d; --muted:#5b7177; --line:#c9d6d9;
   --accent:#e2543a; --stamp:#f2b33d; --soft:#dfecee; --warn:#d1342b;
+  --sky1:#cfe7f3; --sky2:#eef5f7; --cloud:rgba(255,255,255,.85);
   --display:"Do Hyeon","Gothic A1",system-ui,sans-serif;
   --body:"Gothic A1",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
-@media (prefers-color-scheme:dark){:root{
-  --bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349;
-  --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; --warn:#ff6b5e; color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1d21; --paper:#16292e; --ink:#e4efef; --muted:#93aaae; --line:#2b4349; --accent:#f0705a; --stamp:#f2b33d; --soft:#1d353b; --warn:#ff6b5e; --sky1:#13303a; --sky2:#0e1d21; --cloud:rgba(255,255,255,.05); color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.65;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px}
 .wrap{max-width:600px;margin:0 auto;display:grid;gap:16px}
+body{word-break:keep-all;overflow-wrap:anywhere}
 .pass{background:var(--paper);border:1px solid var(--line);border-radius:14px;overflow:hidden}
 .pass-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 20px;
   border-bottom:2px dashed var(--line);font-family:var(--mono);font-size:12px;letter-spacing:.08em;color:var(--muted)}
@@ -105,17 +105,79 @@ ul.picks{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px}
 #imgOut{width:100%;max-width:320px;margin:0 auto;display:block;border-radius:12px;border:1px solid var(--line)}
 .imgbox{display:grid;gap:10px}
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+/* 첫 화면: 하늘 배경 + 탑승권 */
+body{background:
+  radial-gradient(120px 40px at 12% 9%, var(--cloud), transparent 70%),
+  radial-gradient(180px 50px at 82% 15%, var(--cloud), transparent 70%),
+  radial-gradient(140px 40px at 70% 60%, var(--cloud), transparent 70%),
+  linear-gradient(180deg,var(--sky1) 0%,var(--sky2) 420px,var(--bg) 900px) no-repeat, var(--bg)}
+.topbar{max-width:600px;margin:0 auto 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .logo{font-size:26px;color:var(--accent);transform:rotate(-12deg)}
+.brand .name{font-family:var(--mono);font-weight:600;font-size:22px;letter-spacing:.18em;color:var(--ink)}
+.brand .ver{font-family:var(--mono);font-size:12px;font-weight:600;border:1px solid var(--accent);color:var(--accent);border-radius:6px;padding:1px 6px}
+.theme{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--paper);font-size:20px;cursor:pointer}
+.board{box-shadow:0 18px 40px -24px rgba(20,53,61,.45)}
+.board-head{background:linear-gradient(90deg,var(--soft),var(--paper));border-bottom:0}
+.board-head .air{color:var(--accent);font-weight:600}
+.perf{height:12px;background:radial-gradient(circle at 6px 6px,var(--bg) 3.5px,transparent 4px) 0 0/16px 12px repeat-x;border-bottom:2px dashed var(--line);margin:0 12px}
+.board-body{gap:24px;padding-block:28px}
+.routebox{display:grid;grid-template-columns:1fr 1.3fr 1fr;align-items:center;gap:8px;border:1px solid var(--line);border-radius:16px;padding:22px 12px;background:var(--soft)}
+.ap{display:grid;justify-items:center;gap:6px}
+.ap b{font-family:var(--mono);font-size:clamp(34px,10vw,52px);line-height:1;letter-spacing:.06em;color:var(--ink)}
+.ap b.q{color:var(--accent)}
+.ap span{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted)}
+.flight{position:relative;height:40px;min-width:0}
+.flight .track{position:absolute;left:0;right:0;top:50%;border-top:3px dashed var(--accent);opacity:.55}
+.flight .plane{position:absolute;top:50%;left:0;transform:translate(-50%,-55%);font-size:26px;color:var(--accent);animation:fly 3.2s ease-in-out infinite}
+@keyframes fly{0%{left:0;opacity:0}12%{opacity:1}85%{opacity:1}100%{left:100%;opacity:0}}
+.hero-copy{text-align:center;display:grid;gap:8px}
+.hero-copy h1{font-size:clamp(36px,10vw,54px)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stats div{border:1px solid var(--line);border-radius:12px;padding:12px 6px;display:grid;justify-items:center;gap:4px;background:var(--paper);min-width:0}
+.stats span{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--muted)}
+.stats b{font-size:16px;color:var(--accent)}
+@media (max-width:460px){.stats{grid-template-columns:repeat(2,1fr)}}
+.btn-big{font-size:18px;padding:18px;border-radius:14px;box-shadow:0 10px 24px -10px var(--accent)}
+.btn-big:hover{filter:brightness(1.05)}
+.stub{border-top:2px dashed var(--line);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.barcode{height:34px;flex:1;min-width:120px;max-width:220px;background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 8px,var(--ink) 8px 11px,transparent 11px 13px);opacity:.75}
+.stub-info{display:grid;grid-template-columns:repeat(3,auto);column-gap:18px;font-family:var(--mono);text-align:center}
+.stub-info span{font-size:10px;letter-spacing:.15em;color:var(--muted);grid-row:1}
+.stub-info b{font-size:16px;grid-row:2}
+@media (prefers-reduced-motion:reduce){.flight .plane{animation:none;left:50%}}
 </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="brand"><span class="logo" aria-hidden="true">✈</span><span class="name">TRIPPASS</span><span class="ver">v3</span></div>
+  <button class="theme" id="themeBtn" aria-label="밝은 화면과 어두운 화면 바꾸기">☀️</button>
+</header>
 <div class="wrap">
-  <section class="pass" id="s-start">
-    <div class="pass-head"><span>BOARDING PASS</span><span>ICN → ???</span></div>
-    <div class="pass-body">
-      <div class="route"><div>ICN<span class="small">인천</span></div><div class="dash"></div><div>???<span class="small">당신의 여행지</span></div></div>
-      <h1>나한테 맞는 여행지는 어디일까?</h1>
-      <p class="muted">조건 5개, 질문 20개에 답하면 나만의 조합 유형, 학생 시절 모습, 찰떡 여행 메이트, 국내외 추천 여행지 3곳을 알려드려요. 3분이면 끝나요.</p>
-      <button class="btn" id="go">테스트 시작</button>
+  <section class="pass board" id="s-start">
+    <div class="pass-head board-head"><span class="air">TRIPPASS AIR</span><span>PERSONALITY TEST</span></div>
+    <div class="perf" aria-hidden="true"></div>
+    <div class="pass-body board-body">
+      <div class="routebox">
+        <div class="ap"><b>ICN</b><span>INCHEON</span></div>
+        <div class="flight" aria-hidden="true"><span class="plane">✈</span><span class="track"></span></div>
+        <div class="ap"><b class="q">???</b><span>YOUR DEST</span></div>
+      </div>
+      <div class="hero-copy">
+        <h1>나만의 여행 탑승권</h1>
+        <p class="muted">질문에 답하면 나에게 꼭 맞는 여행지 3곳을 찾아드려요</p>
+      </div>
+      <div class="stats">
+        <div><span>CONDITIONS</span><b>5개</b></div>
+        <div><span>QUESTIONS</span><b>20개</b></div>
+        <div><span>TIME</span><b>약 3분</b></div>
+        <div><span>RESULT</span><b>3곳</b></div>
+      </div>
+      <button class="btn btn-big" id="go">탑승권 발급하기 <span aria-hidden="true">→</span></button>
+    </div>
+    <div class="stub">
+      <div class="barcode" aria-hidden="true"></div>
+      <div class="stub-info"><span>GATE</span><b>20</b><span>BOARDING</span><b>NOW</b><span>SEAT</span><b>1A</b></div>
     </div>
   </section>
 
@@ -353,6 +415,10 @@ document.querySelectorAll(".chips").forEach(box=>{
   const name=box.dataset.name;
   box.innerHTML=COND[name].map(([v,l])=>`<input type="radio" id="${name}-${v}" name="${name}" value="${v}" ${DEF[name]===v?"checked":""}><label for="${name}-${v}">${l}</label>`).join("");
 });
+try{const t=localStorage.getItem("tt_theme"); if(t) document.documentElement.dataset.theme=t;}catch(e){}
+const syncTheme=()=>{const dark=document.documentElement.dataset.theme==="dark"; $("#themeBtn").textContent=dark?"🌙":"☀️";};
+syncTheme();
+$("#themeBtn").onclick=()=>{const dark=$("#themeBtn").textContent==="🌙"; const next=dark?"light":"dark"; document.documentElement.dataset.theme=next; try{localStorage.setItem("tt_theme",next)}catch(e){} syncTheme();};
 $("#go").onclick=()=>{ history.replaceState(null,"",location.pathname); show("s-cond"); window.scrollTo(0,0); };
 $("#condForm").addEventListener("submit",e=>{
   e.preventDefault();
